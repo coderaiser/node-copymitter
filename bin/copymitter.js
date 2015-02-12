@@ -4,6 +4,7 @@
     'use strict';
     
     var copymitor   = require('..'),
+        glob        = require('glob'),
         args        = process.argv.slice(2),
         arg         = args[0];
         
@@ -12,12 +13,18 @@
     else if (!arg || /^(-h|--help)$/.test(arg))
         help();
     else
-        main(args[0], args[1]);
+        glob(arg, function(error, files) {
+            var to      = args[1],
+                from    = process.cwd();
+            
+            if (error)
+                console.error(error.message);
+            else
+                main(from, to, files);
+        })
        
-    function main(file, to) {
-        var cp,
-            from    = process.cwd(),
-            files   = [file];
+    function main(from, to, files) {
+        var cp;
         
         cp = copymitor(from, to, files);
         
@@ -28,10 +35,6 @@
         cp.on('error', function(error, name, i, percent) {
             console.error(percent + ' ->', name, ':', error.message);
             cp.emit('continue');
-        });
-        
-        cp.on('end', function() {
-            console.log('end');
         });
     }
     
