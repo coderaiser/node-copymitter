@@ -1,3 +1,9 @@
+2015.02.12, v1.3.2
+
+fix:
+- (package) bin: copymitter -> bin/copymitter
+
+
 2015.02.12, v1.3.1
 
 feature:
