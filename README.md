@@ -2,13 +2,34 @@
 
 Copy files with emitter.
 
-## Install
+## Global
+
+`Copymitter` could be installed global with
+
+```
+npm i copymitter -g
+```
+And used this way:
+
+```
+Usage: copymitter [filename] [distanation path]
+Options:
+  -h, --help      display this help and exit
+  -v, --version   output version information and exit
+```
+
+## Local
+
+`Copymitter` could be used localy. It will emit event on every copied file.
+Good for making progress bars.
+
+### Install
 
 ```
 npm i copymitter --save
 ```
 
-## How to use?
+### How to use?
 
 ```js
 var cwd     = process.cwd(),
