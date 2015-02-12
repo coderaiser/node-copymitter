@@ -1,0 +1,30 @@
+{
+  "name": "copymitter",
+  "version": "1.0.0",
+  "description": "copy files with emitter",
+  "main": "lib/copymitter.js",
+  "bin": {
+    "copymitter": "copymitter.js"
+  },
+  "dependencies": {
+    "pipe-io": "~1.1.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/coderaiser/node-copymitter.git"
+  },
+  "keywords": [
+    "copy",
+    "emitter"
+  ],
+  "author": "coderaiser <mnemonic.enemy@gmail.com> (http://coderaiser.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coderaiser/node-copymitter/issues"
+  },
+  "homepage": "https://github.com/coderaiser/node-copymitter"
+}
