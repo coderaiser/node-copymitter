@@ -4,7 +4,7 @@
   "description": "copy files with emitter",
   "main": "lib/copymitter.js",
   "bin": {
-    "copymitter": "copymitter.js"
+    "copymitter": "bin/copymitter.js"
   },
   "dependencies": {
     "findit": "~2.0.0",
