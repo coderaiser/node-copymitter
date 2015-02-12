@@ -52,7 +52,7 @@ cp.on('error', function(error, name, i, percent) {
 });
 
 cp.on('end', function() {
-    console.log('end');
+    console.log('Copying ended up');
 });
 ```
 
@@ -62,6 +62,7 @@ In case of starting example output should be similar to:
 33% -> examples/LICENSE
 67% -> examples/README.md
 100% -> examples/package.json
+Copying ended up
 ```
 
 ## License
