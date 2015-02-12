@@ -48,7 +48,7 @@ cp.on('file', function(name, name, i, percent) {
 
 cp.on('error', function(error, name, i, percent) {
     console.error(percent, ' ', name, ':', error.message);
-    cp.emit('continue');
+    cp.continue();
 });
 
 cp.on('end', function() {

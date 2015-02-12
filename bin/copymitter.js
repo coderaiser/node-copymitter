@@ -21,7 +21,7 @@
                 console.error(error.message);
             else
                 main(from, to, files);
-        })
+        });
        
     function main(from, to, files) {
         var cp;
@@ -34,7 +34,7 @@
         
         cp.on('error', function(error, name, i, percent) {
             console.error(percent + ' ->', name, ':', error.message);
-            cp.emit('continue');
+            cp.continue();
         });
     }
     
