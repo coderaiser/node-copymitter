@@ -43,17 +43,25 @@ cp = copymitor(from, to, [
 ]);
 
 cp.on('file', function(name, name, i, percent) {
-    console.log(percent, ' ', name);
+    console.log(percent, ' -> ', name);
 });
 
 cp.on('error', function(error, name, i, percent) {
-    console.error(percent, ' ', name, ':', error.message);
+    console.error(percent, ' -> ', name, ':', error.message);
     cp.continue();
 });
 
 cp.on('end', function() {
     console.log('end');
 });
+```
+
+In case of starting example output should be similar to:
+
+```
+33% -> examples/LICENSE
+67% -> examples/README.md
+100% -> examples/package.json
 ```
 
 ## License
