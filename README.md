@@ -32,9 +32,10 @@ npm i copymitter --save
 ### How to use?
 
 ```js
-var cwd     = process.cwd(),
-    from    = cwd + '/pipe-io',
-    to      = cwd + '/example';
+var cwd           = process.cwd(),
+    from          = cwd + '/pipe-io',
+    to            = cwd + '/example',
+    abortOnError  = false;
     
 cp = copymitor(from, to, [
     'LICENSE',
@@ -48,7 +49,11 @@ cp.on('file', function(name, name, i, percent) {
 
 cp.on('error', function(error, name, i, percent) {
     console.error(percent, ' -> ', name, ':', error.message);
-    cp.continue();
+    
+    if (abortOnError)
+        cp.abort();
+    else
+        cp.continue();
 });
 
 cp.on('end', function() {
