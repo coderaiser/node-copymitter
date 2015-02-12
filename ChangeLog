@@ -1,3 +1,9 @@
+2015.02.12, v1.3.1
+
+feature:
+- (copymitter) emit "continue" -> continue
+
+
 2015.02.12, v1.3.0
 
 feature:
