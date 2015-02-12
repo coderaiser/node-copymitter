@@ -9,15 +9,13 @@
     
     function copy() {
         var cp,
-            from    = '/home/coderaiser/copymitter/node_modules/pipe-io',
+            from    = '/home/coderaiser/copymitter/node_modules/',
             to      = '/home/coderaiser/copymitter/example',
             files   = [
-                'sldfjdlsfj',
-                '.npmignore',
-                'ChangeLog',
-                'LICENSE',
-                'README.md',
-                'package.json'
+                'resume.js',
+                'slap.log',
+                'mkdirp',
+                'pipe-io'
             ];
         
         cp = copymitor(from, to, files);

@@ -7,6 +7,8 @@
     "copymitter": "copymitter.js"
   },
   "dependencies": {
+    "findit": "~2.0.0",
+    "mkdirp": "~0.5.0",
     "pipe-io": "~1.1.8"
   },
   "devDependencies": {},
