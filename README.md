@@ -11,7 +11,7 @@ npm i copymitter --save
 ## How to use?
 
 ```js
-var cw      = process.cwd(),
+var cwd     = process.cwd(),
     from    = cwd + '/pipe-io',
     to      = cwd + '/example';
     
