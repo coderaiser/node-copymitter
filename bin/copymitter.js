@@ -3,20 +3,21 @@
 (function() {
     'use strict';
     
-    var copymitor   = require('..');
-    
-    copy();
-    
-    function copy() {
+    var copymitor   = require('..'),
+        args        = process.argv.slice(2),
+        arg         = args[0];
+        
+    if (/^(-v|--v)$/.test(arg))
+        version();
+    else if (!arg || /^(-h|--help)$/.test(arg))
+        help();
+    else
+        main(args[0], args[1]);
+       
+    function main(file, to) {
         var cp,
-            from    = '/home/coderaiser/copymitter/node_modules/',
-            to      = '/home/coderaiser/copymitter/example',
-            files   = [
-                'resume.js',
-                'slap.log',
-                'mkdirp',
-                'pipe-io'
-            ];
+            from    = process.cwd(),
+            files   = [file];
         
         cp = copymitor(from, to, files);
         
@@ -31,6 +32,27 @@
         
         cp.on('end', function() {
             console.log('end');
+        });
+    }
+    
+    function version() {
+        console.log('v' + info().version);
+    }
+    
+    function info() {
+        return require('../package');
+    }
+    
+    function help() {
+        var bin         = require('../json/bin'),
+            usage       = 'Usage: ' + info().name + ' [filename] [distanation path]';
+            
+        console.log(usage);
+        console.log('Options:');
+        
+        Object.keys(bin).forEach(function(name) {
+            var line = '  ' + name + ' ' + bin[name];
+            console.log(line);
         });
     }
 })();
