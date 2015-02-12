@@ -21,12 +21,12 @@ cp = copymitor(from, to, [
     'package.json'
 ]);
 
-cp.on('file', function(name) {
-    console.log(name);
+cp.on('file', function(name, name, i, percent) {
+    console.log(percent, ' ', name);
 });
 
-cp.on('error', function(error, name) {
-    console.error(name, ':', error.message);
+cp.on('error', function(error, name, i, percent) {
+    console.error(percent, ' ', name, ':', error.message);
     cp.emit('continue');
 });
 
