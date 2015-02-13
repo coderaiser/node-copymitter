@@ -1,3 +1,10 @@
+2015.02.13, v1.4.0
+
+feature:
+- (copymitter) add ability to work with absolute path in bin
+- (copymitter) add progress event
+
+
 2015.02.12, v1.3.2
 
 fix:
