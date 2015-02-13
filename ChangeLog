@@ -1,3 +1,9 @@
+2015.02.13, v1.4.1
+
+fix:
+- (copymitter) add ability to copy empty directories
+
+
 2015.02.13, v1.4.0
 
 feature:
