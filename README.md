@@ -44,7 +44,7 @@ cp = copymitter(from, to, [
     'package.json'
 ]);
 
-cp.on('file', function(name,) {
+cp.on('file', function(name) {
     console.log(name);
 });
 
