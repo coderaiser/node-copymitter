@@ -44,8 +44,12 @@ cp = copymitter(from, to, [
     'package.json'
 ]);
 
-cp.on('file', function(name, name, i, percent) {
-    console.log(percent, ' -> ', name);
+cp.on('file', function(name,) {
+    console.log(name);
+});
+
+cp.on('progress', function(percent) {
+    console.log(percent);
 });
 
 cp.on('error', function(error, name, i, percent) {
@@ -65,9 +69,9 @@ cp.on('end', function() {
 In case of starting example output should be similar to:
 
 ```
-33% -> examples/LICENSE
-67% -> examples/README.md
-100% -> examples/package.json
+33%
+67%
+100%
 Copying ended up
 ```
 
