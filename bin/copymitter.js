@@ -41,7 +41,7 @@
         });
         
         cp.on('progress', function(percent) {
-            console.log(percent);
+            console.log(percent + '%');
         });
         
         cp.on('end', function() {
