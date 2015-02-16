@@ -1,3 +1,11 @@
+2015.02.16, v1.5.1
+
+feature:
+- (copymitter) unlink -> rimraf
+- (package) v1.5.0
+- (copymitter) cpOneFile: rm send check
+
+
 2015.02.14, v1.5.0
 
 feature:
