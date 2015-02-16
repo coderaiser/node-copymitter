@@ -10,7 +10,8 @@
     "findit": "~2.0.0",
     "glob": "~4.3.5",
     "mkdirp": "~0.5.0",
-    "pipe-io": "~1.1.8"
+    "pipe-io": "~1.1.8",
+    "rimraf": "~2.2.8"
   },
   "devDependencies": {},
   "scripts": {
