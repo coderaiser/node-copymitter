@@ -1,3 +1,9 @@
+2015.02.18, v1.5.3
+
+fix:
+- (copymitter) rm graceful-fs
+
+
 2015.02.18, v1.5.2
 
 feature:
