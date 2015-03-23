@@ -50,6 +50,11 @@ cp.on('file', function(name) {
 
 cp.on('progress', function(percent) {
     console.log(percent);
+    
+    if (percent >= 50) {
+        cp.pause();
+        cp.continue();
+    }
 });
 
 cp.on('error', function(error, name, i, percent) {
