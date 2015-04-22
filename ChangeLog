@@ -1,3 +1,9 @@
+2015.04.22, v1.6.1
+
+fix:
+- (copymitter) infinite trying to copy when from is ENOENT
+
+
 2015.03.23, v1.6.0
 
 feature:
