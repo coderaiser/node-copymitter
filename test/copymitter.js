@@ -61,4 +61,31 @@
         });
     });
     
+    test('copy 1 directory', function(t) {
+        var array   = [],
+            from    = path.join(__dirname, '..'),
+            to      = '/tmp',
+            name    = path.basename(__dirname);
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('file', function(file) {
+            var nameFile    = path.basename(__filename),
+                full        = path.join(to, name, nameFile);
+            
+            t.equal(file, full, 'file path');
+        });
+        
+        cp.on('progress', function(progress) {
+            array.push(progress);
+        });
+        
+        cp.on('end', function() {
+            t.deepEqual(array, [50, 100], 'progress');
+            t.end();
+        });
+    });
+    
 })();
