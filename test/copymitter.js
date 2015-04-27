@@ -38,20 +38,22 @@
         });
     });
     
-    test('file: error ENOENT', function(t) {
+    test('copy 1 file', function(t) {
         var from    = __dirname,
             to      = '/tmp',
-            name    = Math
-                .random()
-                .toString();
+            name    = path.basename(__filename);
         
         var cp = copymitter(from, to, [
             name
         ]);
         
-        cp.on('error', function(error) {
-            t.equal(error.code, 'ENOENT', error.message);
-            cp.abort();
+        cp.on('file', function(file) {
+            var full = path.join(to, name);
+            t.equal(file, full, 'file path');
+        });
+        
+        cp.on('progress', function(progress) {
+            t.equal(progress, 100, 'progress');
         });
         
         cp.on('end', function() {
