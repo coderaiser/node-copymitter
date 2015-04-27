@@ -38,4 +38,25 @@
         });
     });
     
+    test('file: error ENOENT', function(t) {
+        var from    = __dirname,
+            to      = '/tmp',
+            name    = Math
+                .random()
+                .toString();
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('error', function(error) {
+            t.equal(error.code, 'ENOENT', error.message);
+            cp.abort();
+        });
+        
+        cp.on('end', function() {
+            t.end();
+        });
+    });
+    
 })();
