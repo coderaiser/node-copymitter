@@ -50,11 +50,17 @@
         
         cp.on('file', function(file) {
             var full        = path.join(to, name),
+            
                 dataFile    = fs.readFileSync(file, 'utf8'),
-                dataFull    = fs.readFileSync(full, 'utf8');
+                dataFull    = fs.readFileSync(full, 'utf8'),
+                
+                statFile    = fs.statSync(file),
+                statFull    = fs.statSync(full);
             
             t.equal(file, full, 'file path');
-            t.equal(dataFile, dataFull, 'files data equal');
+            t.equal(dataFile, dataFull, 'files data');
+            
+            t.deepEqual(statFile, statFull, 'file stats');
         });
         
         cp.on('progress', function(progress) {
