@@ -1,4 +1,4 @@
-# Copymitter
+# Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Dependency Status][DependencyStatusIMGURL]][DependencyStatusURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL]
 
 Copy files with emitter.
 
@@ -83,3 +83,13 @@ Copying ended up
 ## License
 
 MIT
+
+[NPMIMGURL]:                https://img.shields.io/npm/v/copymitter.svg?style=flat
+[BuildStatusIMGURL]:        https://img.shields.io/travis/coderaiser/node-copymitter/master.svg?style=flat
+[DependencyStatusIMGURL]:   https://img.shields.io/gemnasium/coderaiser/node-copymitter.svg?style=flat
+[LicenseIMGURL]:            https://img.shields.io/badge/license-MIT-317BF9.svg?style=flat
+[NPMURL]:                   https://npmjs.org/package/copymitter "npm"
+[BuildStatusURL]:           https://travis-ci.org/coderaiser/node-copymitter  "Build Status"
+[DependencyStatusURL]:      https://gemnasium.com/coderaiser/node-copymitter "Dependency Status"
+[LicenseURL]:               https://tldrlegal.com/license/mit-license "MIT License"
+
