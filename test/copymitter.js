@@ -2,6 +2,7 @@
     'use strict';
     
     var path        = require('path'),
+        fs          = require('fs'),
         test        = require('tape'),
         copymitter  = require('..');
     
@@ -48,8 +49,12 @@
         ]);
         
         cp.on('file', function(file) {
-            var full = path.join(to, name);
+            var full        = path.join(to, name),
+                dataFile    = fs.readFileSync(file, 'utf8'),
+                dataFull    = fs.readFileSync(full, 'utf8');
+            
             t.equal(file, full, 'file path');
+            t.equal(dataFile, dataFull, 'files data equal');
         });
         
         cp.on('progress', function(progress) {
