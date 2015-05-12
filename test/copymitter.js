@@ -34,6 +34,10 @@
             cp.abort();
         });
         
+        cp.on('file', function(file) {
+            console.log(file);
+        });
+        
         cp.on('end', function() {
             t.end();
         });
