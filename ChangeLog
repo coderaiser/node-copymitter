@@ -1,3 +1,9 @@
+2015.05.12, v1.6.3
+
+fix:
+- (copymitter) do not emit error when could not mkdirp
+
+
 2015.04.28, v1.6.2
 
 feature:
