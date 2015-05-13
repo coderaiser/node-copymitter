@@ -1,3 +1,9 @@
+2015.05.13, v1.7.7
+
+fix:
+- (copymitter) add "EISDIR"-check to unlink
+
+
 2015.05.13, v1.7.6
 
 fix:
