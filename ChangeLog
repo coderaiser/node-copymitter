@@ -1,3 +1,9 @@
+2015.05.13, v1.7.3
+
+fix:
+- (copymitter) could not copy directories
+
+
 2015.05.13, v1.7.2
 
 feature:
