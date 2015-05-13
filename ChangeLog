@@ -1,3 +1,9 @@
+2015.05.13, v1.7.0
+
+feature:
+- (copymitter) do not remove directory when it already exist
+
+
 2015.05.12, v1.6.3
 
 fix:
