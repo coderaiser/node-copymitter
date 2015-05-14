@@ -99,4 +99,23 @@
         });
     });
     
+     test('file: error ENOENT', function(t) {
+        var from    = '/',
+            to      = '/tmp';
+        
+        var cp = copymitter(from, to, [
+            Math.random()
+                .toString()
+        ]);
+        
+        cp.on('error', function(error) {
+            t.equal(error.code, 'ENOENT', error.message);
+            cp.abort();
+        });
+        
+        cp.on('end', function() {
+            t.end();
+        });
+    });
+    
 })();
