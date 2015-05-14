@@ -13,7 +13,7 @@ feature:
 2015.05.14, v1.8.0
 
 feature:
-- (copymitter) _access: check read access before copy to prevent creating new file whe no access
+- (copymitter) _access: check read access before copy to prevent creating new file when no access
 - (copymitter) check file type before copy
 
 
