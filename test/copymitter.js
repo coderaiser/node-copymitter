@@ -73,20 +73,19 @@
     });
     
     test('copy 1 directory', function(t) {
-        var array   = [],
+        var files   = [],
+            array   = [],
             from    = path.join(__dirname, '..'),
             to      = '/tmp',
-            name    = path.basename(__dirname);
+            name    = path.basename(__dirname),
+            FILES   = ['/tmp/test', path.join('/tmp/test', path.basename(__filename))];
         
         var cp = copymitter(from, to, [
             name
         ]);
         
         cp.on('file', function(file) {
-            var nameFile    = path.basename(__filename),
-                full        = path.join(to, name, nameFile);
-            
-            t.equal(file, full, 'file path');
+            files.push(file);
         });
         
         cp.on('progress', function(progress) {
@@ -94,6 +93,7 @@
         });
         
         cp.on('end', function() {
+            t.deepEqual(files, FILES, 'progress');
             t.deepEqual(array, [50, 100], 'progress');
             t.end();
         });
