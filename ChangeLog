@@ -1,3 +1,9 @@
+2015.11.10, v1.8.6
+
+fix:
+- (copymitter) access writes
+
+
 2015.08.17, v1.8.5
 
 feature:
