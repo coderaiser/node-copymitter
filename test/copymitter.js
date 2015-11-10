@@ -39,8 +39,8 @@
         });
     });
     
-    test('copy 1 file', function(t) {
-        var from    = __dirname,
+    test('copy 1 file: to', function(t) {
+        var from    = path.join(__dirname, '/../bin/'),
             to      = '/tmp',
             name    = path.basename(__filename);
         
@@ -49,7 +49,31 @@
         ]);
         
         cp.on('file', function(file) {
-            var full        = path.join(to, name),
+            var full = path.join(to, name);
+            
+            t.equal(file, full, 'file paths should be equal');
+        });
+        
+        cp.on('progress', function(progress) {
+            t.equal(progress, 100, 'progress');
+        });
+        
+        cp.on('end', function() {
+            t.end();
+        });
+    });
+    
+    test('copy 1 file: from', function(t) {
+        var from    = path.join(__dirname, '/../bin/'),
+            to      = '/tmp',
+            name    = path.basename(__filename);
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('file', function(file) {
+            var full        = path.join(from, name),
             
                 dataFile    = fs.readFileSync(file, 'utf8'),
                 dataFull    = fs.readFileSync(full, 'utf8'),
@@ -57,10 +81,8 @@
                 statFile    = fs.statSync(file),
                 statFull    = fs.statSync(full);
             
-            t.equal(file, full, 'file path');
-            t.equal(dataFile, dataFull, 'files data');
-            
-            t.deepEqual(statFile, statFull, 'file stats');
+            t.equal(dataFile, dataFull, 'files data should be equal');
+            t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
         });
         
         cp.on('progress', function(progress) {
