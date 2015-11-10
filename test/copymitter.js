@@ -99,7 +99,7 @@
         });
     });
     
-     test('file: error ENOENT', function(t) {
+    test('file: error ENOENT', function(t) {
         var from    = '/',
             to      = '/tmp';
         
