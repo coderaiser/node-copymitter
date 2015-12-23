@@ -3,6 +3,8 @@
     
     var path        = require('path'),
         fs          = require('fs'),
+        rimraf      = require('rimraf'),
+        mkdirp      = require('mkdirp'),
         test        = require('tape'),
         copymitter  = require('..');
     
@@ -17,6 +19,46 @@
         });
         
         cp.on('end', function() {
+            t.end();
+        });
+    });
+    
+    test('file: error EACESS: no fs.access', function(t) {
+        var access = fs.access;
+        
+        fs.access = null;
+        
+        var cp = copymitter(__dirname, '/', [
+            path.basename(__filename)
+        ]);
+        
+        cp.on('error', function(error) {
+            t.equal(error.code, 'EACCES', error.message);
+            cp.abort();
+        });
+        
+        cp.on('end', function() {
+            fs.access = access;
+            t.end();
+        });
+    });
+    
+    test('file: error EACESS: no fs.access, read error', function(t) {
+        var access = fs.access;
+        
+        fs.access = null;
+        
+        var cp = copymitter('/root', '/', [
+            path.basename(__filename)
+        ]);
+        
+        cp.on('error', function(error) {
+            t.equal(error.code, 'EACCES', error.message);
+            cp.abort();
+        });
+        
+        cp.on('end', function() {
+            fs.access = access;
             t.end();
         });
     });
@@ -59,6 +101,46 @@
         });
         
         cp.on('end', function() {
+            t.end();
+        });
+    });
+    
+    test('copy 1 file: to (error: EISDIR, not create dir)', function(t) {
+        var mkdir   = fs.mkdir,
+            from    = path.join(__dirname, '..'),
+            to      = path.join('/tmp', String(Math.random())),
+            name    = 'bin';
+        
+        fs.mkdir =  function(name, mode, cb) {
+            cb();
+        };
+        
+        fs.mkdirSync(to);
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+         
+        cp.on('end', function() {
+            fs.mkdir = mkdir;
+            rimraf.sync(to);
+            t.end();
+        });
+    });
+    
+    test('copy 1 file: to (directory exist)', function(t) {
+        var from    = path.join(__dirname, '..'),
+            to      = path.join('/tmp', String(Math.random())),
+            name    = 'bin';
+        
+        mkdirp.sync(path.join(to, 'bin', 'copymitter.js'));
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('end', function() {
+            rimraf.sync(to);
             t.end();
         });
     });
@@ -140,4 +222,23 @@
         });
     });
     
+    test('pause/continue', function(t) {
+        var from    = path.join(__dirname, '..'),
+            to      = path.join('/tmp', String(Math.random())),
+            name    = 'bin';
+        
+        mkdirp.sync(to);
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.pause();
+        cp.continue();
+         
+        cp.on('end', function() {
+            rimraf.sync(to);
+            t.end();
+        });
+    });
 })();
