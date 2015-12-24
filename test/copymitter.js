@@ -120,14 +120,54 @@
         var cp = copymitter(from, to, [
             name
         ]);
-         
+        
+        cp.on('error', function(error) {
+            t.ok(error, 'should be error');
+        });
+        
         cp.on('end', function() {
             fs.mkdir = mkdir;
             rimraf.sync(to);
             t.end();
         });
     });
-    
+   /* 
+    test('copy 1 file: to (error: EISDIR, create dir error)', function(t) {
+        var was,
+            mkdir   = fs.mkdir,
+            from    = path.join(__dirname, '..'),
+            to      = path.join('/tmp', String(Math.random())),
+            name    = 'bin';
+        
+        fs.mkdir =  function(name, mode, cb) {
+            var error;
+            
+            if (!was)
+                was = true;
+            else
+                error = Error('NOT EEXIST');
+            
+            cb(error);
+        };
+        
+        fs.mkdirSync(to);
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('error', function(error) {
+            t.ok(error, 'should be error: ' + error.message);
+            cp.abort();
+        });
+        
+        cp.on('end', function() {
+            fs.mkdir = mkdir;
+            rimraf.sync(to);
+            t.end();
+        });
+    });
+    */
     test('copy 1 file: to (directory exist)', function(t) {
         var from    = path.join(__dirname, '..'),
             to      = path.join('/tmp', String(Math.random())),
@@ -140,6 +180,41 @@
         ]);
         
         cp.on('end', function() {
+            rimraf.sync(to);
+            t.end();
+        });
+    });
+     
+     test('copy 1 file: to (directory exist, error mkdir)', function(t) {
+        var was,
+            mkdir   = fs.mkdir,
+            from    = path.join(__dirname, '..'),
+            to      = path.join('/tmp', String(Math.random())),
+            name    = 'bin';
+        
+        fs.mkdir =  function(name, mode, cb) {
+            var error;
+            
+            if (!was)
+                was = true;
+            else
+                error = Error('NOT EEXIST');
+            
+            cb(error);
+        };
+        
+        mkdirp.sync(path.join(to, 'bin', 'copymitter.js'));
+        
+        var cp = copymitter(from, to, [
+            name
+        ]);
+        
+        cp.on('error', function(error) {
+            t.ok(error, 'should be error: ' + error.message);
+            cp.abort();
+        });
+        cp.on('end', function() {
+            fs.mkdir = mkdir;
             rimraf.sync(to);
             t.end();
         });
