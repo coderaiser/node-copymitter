@@ -1,0 +1,18 @@
+{
+    "preset": "crockford",
+    "requireSpaceAfterKeywords": false,
+    "requireCapitalizedConstructors": false,
+    "disallowTrailingWhitespace": "ignoreEmptyLines",
+    "disallowTrailingComma": false,
+    "validateIndentation": false,
+    "requireCurlyBraces": false,
+    "requireVarDeclFirst": false,
+    "requireMultipleVarDecl": false,
+    "requireSpacesInAnonymousFunctionExpression": {
+        "beforeOpeningCurlyBrace": true
+    },
+    "disallowDanglingUnderscores": false,
+    "excludeFiles": [
+        "node_modules/**"
+    ]
+}

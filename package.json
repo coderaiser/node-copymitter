@@ -14,7 +14,10 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
+    "jscs": "~2.7.0",
+    "jshint": "~2.8.0",
     "mkdirp": "^0.5.1",
+    "npm-run-all": "~1.4.0",
     "nyc": "^5.0.1",
     "rimraf": "^2.4.4",
     "tape": "^4.2.0"
@@ -22,7 +25,10 @@
   "scripts": {
     "test": "tape test/*.js",
     "coverage": "nyc npm test",
-    "report": "nyc report --reporter=text-lcov | coveralls"
+    "report": "nyc report --reporter=text-lcov | coveralls",
+    "jscs": "jscs --esnext lib test",
+    "jshint": "jshint lib test",
+    "codestyle": "npm-run-all jshint jscs"
   },
   "repository": {
     "type": "git",

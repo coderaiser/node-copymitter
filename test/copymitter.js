@@ -131,7 +131,7 @@
             t.end();
         });
     });
-   /* 
+   /*
     test('copy 1 file: to (error: EISDIR, create dir error)', function(t) {
         var was,
             mkdir   = fs.mkdir,
