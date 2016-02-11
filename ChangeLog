@@ -1,3 +1,12 @@
+2016.02.11, v1.8.9
+
+feature:
+- (package) glob v7.0.0
+- (package) add codestyle
+- (package) add debug
+- (package) add coverage
+
+
 2015.11.14, v1.8.8
 
 feature:
