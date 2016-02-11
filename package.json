@@ -9,7 +9,7 @@
   "dependencies": {
     "debug": "~2.2.0",
     "findit": "~2.0.0",
-    "glob": "~6.0.1",
+    "glob": "~7.0.0",
     "pipe-io": "~1.2.0"
   },
   "devDependencies": {
