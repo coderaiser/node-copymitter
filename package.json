@@ -17,8 +17,8 @@
     "jscs": "^3.0.3",
     "jshint": "^2.8.0",
     "mkdirp": "^0.5.1",
-    "npm-run-all": "^1.4.0",
     "nyc": "^6.1.1",
+    "redrun": "^3.0.0",
     "rimraf": "^2.4.4",
     "tape": "^4.2.0"
   },
@@ -28,7 +28,7 @@
     "report": "nyc report --reporter=text-lcov | coveralls",
     "jscs": "jscs --esnext lib test",
     "jshint": "jshint lib test",
-    "codestyle": "npm-run-all jshint jscs"
+    "codestyle": "redrun jshint jscs"
   },
   "repository": {
     "type": "git",
