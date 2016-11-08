@@ -10,7 +10,7 @@
     "debug": "~2.2.0",
     "findit": "~2.0.0",
     "glob": "^7.1.0",
-    "pipe-io": "~1.2.0"
+    "pipe-io": "^2.0.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
