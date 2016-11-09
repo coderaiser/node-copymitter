@@ -7,7 +7,7 @@
     "copymitter": "bin/copymitter.js"
   },
   "dependencies": {
-    "debug": "~2.2.0",
+    "debug": "^2.3.0",
     "findit": "~2.0.0",
     "glob": "^7.1.0",
     "pipe-io": "^2.0.0"
