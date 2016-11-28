@@ -316,3 +316,82 @@ test('pause/continue', function(t) {
     });
 });
 
+test('cpOneFile: error: EPERM', (t) => {
+    const from = __dirname;
+    const to = '/tmp';
+    const name = 'bin';
+    
+    const {stat, access} = fs;
+    const error = Error('Operation not permitted');
+    
+    let once;
+    
+    fs.stat = (name, fn) => {
+        if (once)
+            return fn(error);
+        
+        once = true;
+        stat(name, fn);
+    };
+    
+    fs.access = (from, how, fn) => {
+        fn();
+    };
+    
+    var cp = copymitter(from, to, [
+        name
+    ]);
+    
+    cp.on('error', (e) => {
+        t.equal(e, error, 'should operation be not permitted');
+        cp.continue();
+    });
+    
+    cp.on('end', () => {
+        fs.stat = stat;
+        fs.access = access;
+        t.end();
+    });
+});
+
+test('cpOneFile: error: EPERM: no fs.access', (t) => {
+    const from = __dirname;
+    const to = '/tmp';
+    const name = 'copymitter.js';
+    
+    const {stat, open, access} = fs;
+    const error = Error('Operation not permitted');
+    
+    let count;
+    
+    fs.stat = (name, fn) => {
+        if (count === 2)
+            return fn(error);
+        
+        ++count;
+        stat(name, fn);
+    };
+    
+    fs.access = null;
+    
+    fs.open = (name, how, fn) => {
+        fn(error);
+    };
+    
+    const cp = copymitter(from, to, [
+        name
+    ]);
+    
+    cp.on('error', (e) => {
+        t.equal(e, error, 'should operation be not permitted');
+        cp.continue();
+    });
+    
+    cp.on('end', () => {
+        fs.stat = stat;
+        fs.open = open;
+        fs.access = access;
+        t.end();
+    });
+});
+
