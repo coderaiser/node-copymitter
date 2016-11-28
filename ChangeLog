@@ -1,3 +1,13 @@
+2016.11.28, v1.8.13
+
+fix:
+- (copymitter) error: EPERM
+
+feature:
+- (package) nyc v10.0.0
+- (package) nyc v9.0.1
+
+
 2016.11.09, v1.8.12
 
 feature:
