@@ -1,5 +1,7 @@
 node_modules
 npm-debug.log
 modules
+legacy
 .nyc_output
+.*.swp
 

@@ -1,6 +1,5 @@
 # Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Dependency Status][DependencyStatusIMGURL]][DependencyStatusURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
 
-
 Copy files with emitter.
 
 ## Global
@@ -79,6 +78,13 @@ In case of starting example output should be similar to:
 67%
 100%
 Copying ended up
+```
+## Environments
+
+In old `node.js` environments that supports `es5` only, `copymitter` could be used with:
+
+```js
+var readify = require('copymitter/legacy');
 ```
 
 ## Related
