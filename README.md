@@ -32,13 +32,13 @@ npm i copymitter --save
 ### How to use?
 
 ```js
-var copymitter    = require('copymitter'),
-    cwd           = process.cwd(),
-    from          = cwd + '/pipe-io',
-    to            = cwd + '/example',
-    abortOnError  = false;
-    
-cp = copymitter(from, to, [
+const copymitter = require('copymitter');
+const cwd = process.cwd();
+const from = cwd + '/pipe-io';
+const to = cwd + '/example';
+const abortOnError = false;
+
+const cp = copymitter(from, to, [
     'LICENSE',
     'README.md',
     'package.json'
