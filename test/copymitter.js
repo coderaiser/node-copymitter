@@ -81,9 +81,9 @@ test('folder: error EACESS', (t) => {
 });
 
 test('copy 1 file: to', (t) => {
-    const from    = path.join(__dirname, '/../bin/'),
-        to      = '/tmp',
-        name    = path.basename(__filename);
+    const from = path.join(__dirname, '/../bin/');
+    const to = '/tmp';
+    const name = path.basename(__filename);
     
     const cp = copymitter(from, to, [
         name
@@ -93,6 +93,7 @@ test('copy 1 file: to', (t) => {
         const full = path.join(to, name);
         
         t.equal(file, full, 'file paths should be equal');
+        fs.unlinkSync(full);
     });
     
     cp.on('progress', (progress) => {
@@ -205,15 +206,19 @@ test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
 });
 
 test('copy 1 file: to (directory exist)', (t) => {
-    const from    = path.join(__dirname, '..'),
-        to      = path.join('/tmp', String(Math.random())),
-        name    = 'bin';
+    const from = path.join(__dirname, '..');
+    const to = path.join('/tmp', String(Math.random()));
+    const name = 'bin';
     
     mkdirp.sync(path.join(to, 'bin', 'copymitter.js'));
     
     const cp = copymitter(from, to, [
         name
     ]);
+    
+    cp.once('progress', (n) => {
+        t.equal(n, 50, 'should equal');
+    });
     
     cp.on('end', () => {
         rimraf.sync(to);
@@ -258,9 +263,9 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
 });
 
 test('copy 1 file: from', (t) => {
-    const from    = path.join(__dirname, '/../bin/'),
-        to      = '/tmp',
-        name    = path.basename(__filename);
+    const from = path.join(__dirname, '/../bin/');
+    const to = '/tmp';
+    const name = path.basename(__filename);
     
     const cp = copymitter(from, to, [
         name
@@ -277,6 +282,7 @@ test('copy 1 file: from', (t) => {
         
         t.equal(dataFile, dataFull, 'files data should be equal');
         t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+        fs.unlinkSync(path.join(to, name));
     });
     
     cp.on('progress', (progress) => {
@@ -284,33 +290,6 @@ test('copy 1 file: from', (t) => {
     });
     
     cp.on('end', () => {
-        t.end();
-    });
-});
-
-test('copy 1 directory', (t) => {
-    const files = [];
-    const array = [];
-    const from = path.join(__dirname, '..');
-    const to = '/tmp';
-    const name = path.basename(__dirname);
-    const FILES = ['/tmp/test', path.join('/tmp/test', path.basename(__filename))];
-    
-    const cp = copymitter(from, to, [
-        name
-    ]);
-    
-    cp.on('file', (file) => {
-        files.push(file);
-    });
-    
-    cp.on('progress', (progress) => {
-        array.push(progress);
-    });
-    
-    cp.on('end', () => {
-        t.deepEqual(files, FILES, 'progress');
-        t.deepEqual(array, [50, 100], 'progress');
         t.end();
     });
 });
