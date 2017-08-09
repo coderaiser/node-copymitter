@@ -30,7 +30,7 @@
     "lint": "redrun lint:*"
   },
   "dependencies": {
-    "debug": "^2.3.0",
+    "debug": "^3.0.0",
     "findit": "^2.0.0",
     "glob": "^7.1.0",
     "pipe-io": "^2.0.0"
