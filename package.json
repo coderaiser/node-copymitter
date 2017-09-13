@@ -32,8 +32,8 @@
   "dependencies": {
     "debug": "^3.0.0",
     "findit": "^2.0.0",
-    "glob": "^7.1.0",
-    "pipe-io": "^2.0.0"
+    "fs-copy-file": "^1.0.0",
+    "glob": "^7.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
