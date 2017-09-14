@@ -57,6 +57,11 @@ cp.on('progress', function(percent) {
     }
 });
 
+cp.on('pause', () => {
+    console.log('paused');
+    cp.continue();
+});
+
 cp.on('error', function(error, name, i, percent) {
     console.error(percent, ' -> ', name, ':', error.message);
     
@@ -69,6 +74,8 @@ cp.on('error', function(error, name, i, percent) {
 cp.on('end', function() {
     console.log('Copying ended up');
 });
+
+cp.pause();
 ```
 
 In case of starting example output should be similar to:

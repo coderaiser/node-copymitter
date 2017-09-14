@@ -272,13 +272,12 @@ test('copy 1 file: from', (t) => {
     ]);
     
     cp.on('file', (file) => {
-        const full        = path.join(from, name),
+        const full = path.join(from, name);
         
-            dataFile    = fs.readFileSync(file, 'utf8'),
-            dataFull    = fs.readFileSync(full, 'utf8'),
-            
-            statFile    = fs.statSync(file),
-            statFull    = fs.statSync(full);
+        const dataFile = fs.readFileSync(file, 'utf8');
+        const dataFull = fs.readFileSync(full, 'utf8');
+        const statFile = fs.statSync(file);
+        const statFull = fs.statSync(full);
         
         t.equal(dataFile, dataFull, 'files data should be equal');
         t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
@@ -290,6 +289,29 @@ test('copy 1 file: from', (t) => {
     });
     
     cp.on('end', () => {
+        t.end();
+    });
+});
+
+test('copy directories', (t) => {
+    const from = path.join(__dirname, '..', 'node_modules');
+    const to = '/tmp';
+    const names = [
+        'tape',
+        'rimraf',
+    ];
+    
+    const cp = copymitter(from, to, names);
+    
+    cp.on('end', () => {
+        const dir = path.join(to, names[0]);
+        const stat = fs.statSync(dir);
+        
+        t.ok(stat, 'should copy dir');
+        
+        rimraf.sync(names[0]);
+        rimraf.sync(names[1]);
+        
         t.end();
     });
 });
@@ -324,13 +346,17 @@ test('pause/continue', (t) => {
         name
     ]);
     
-    cp.pause();
-    cp.continue();
-     
+    cp.on('pause', () => {
+        t.pass('should emit pause');
+        cp.continue();
+    });
+    
     cp.on('end', () => {
         rimraf.sync(to);
         t.end();
     });
+    
+    cp.pause();
 });
 
 test('cpOneFile: error: EPERM', (t) => {
