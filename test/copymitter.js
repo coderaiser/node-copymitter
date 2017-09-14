@@ -295,8 +295,8 @@ test('copy 1 file: from', (t) => {
 });
 
 test('file: error ENOENT', (t) => {
-    const from    = '/',
-        to      = '/tmp';
+    const from = '/';
+    const to = '/tmp';
     
     const cp = copymitter(from, to, [
         Math.random()
@@ -314,9 +314,9 @@ test('file: error ENOENT', (t) => {
 });
 
 test('pause/continue', (t) => {
-    const from    = path.join(__dirname, '..'),
-        to      = path.join('/tmp', String(Math.random())),
-        name    = 'bin';
+    const from = path.join(__dirname, '..');
+    const to = path.join('/tmp', String(Math.random()));
+    const name = 'bin';
     
     mkdirp.sync(to);
     
