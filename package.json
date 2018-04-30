@@ -23,8 +23,6 @@
     "test": "tape test/*.js",
     "coverage": "nyc npm test",
     "report": "nyc report --reporter=text-lcov | coveralls",
-    "lint:jscs": "jscs --esnext lib test",
-    "lint:jshint": "jshint lib test",
     "lint:eslint": "eslint lib test",
     "lint:eslint:bin": "eslint --rule 'no-console:0' bin",
     "lint": "redrun lint:*"
@@ -40,8 +38,6 @@
     "babel-preset-env": "^1.6.1",
     "coveralls": "^3.0.0",
     "eslint": "^4.0.0",
-    "jscs": "^3.0.3",
-    "jshint": "^2.8.0",
     "mkdirp": "^0.5.1",
     "nodemon": "^1.11.0",
     "nyc": "^11.0.2",
