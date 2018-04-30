@@ -2,21 +2,21 @@
 
 'use strict';
 
-var copymitor   = require('..'),
-    path        = require('path'),
-    glob        = require('glob'),
-    args        = process.argv.slice(2),
-    arg         = args[0];
-    
+var copymitor = require('..');
+var path = require('path');
+var glob = require('glob');
+var args = process.argv.slice(2);
+var arg = args[0];
+
 if (/^-(v|-version)$/.test(arg))
     version();
 else if (!arg || args.length === 1|| /^-(h|-help)$/.test(arg))
     help();
 else
     glob(arg, function(error, files) {
-        var from,
-            to      = args[1],
-            name    = files[0];
+        var from;
+        var to = args[1];
+        var name = files[0];
         
         if (~name.indexOf('/'))
             from    = path.dirname(name);
@@ -30,9 +30,7 @@ else
     });
    
 function main(from, to, files) {
-    var cp;
-    
-    cp = copymitor(from, to, files);
+    var cp = copymitor(from, to, files);
     
     cp.on('error', function(error, name) {
         console.error(name, ':', error.message);
@@ -57,9 +55,9 @@ function info() {
 }
 
 function help() {
-    var bin         = require('../json/bin'),
-        usage       = 'Usage: ' + info().name + ' [filename] [distanation path]';
-        
+    var bin = require('../json/bin');
+    var usage = 'Usage: ' + info().name + ' [filename] [distanation path]';
+    
     console.log(usage);
     console.log('Options:');
     
