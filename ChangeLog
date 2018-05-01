@@ -1,3 +1,16 @@
+2018.05.01, v3.0.0
+
+feature:
+- (travis) add node v10
+- (copymitter) drop support of global install
+- (copymitter) drop support of node < 4
+- (copymitter) improve progress: files count -> files size
+- (package) rm jscs, jshint
+- (package) babel-preset: es2015 -> env
+- (package) redrun v6.0.0
+- (package) coveralls v3.0.0
+
+
 2017.09.14, v2.2.0
 
 feature:
