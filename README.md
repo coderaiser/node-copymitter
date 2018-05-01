@@ -20,13 +20,13 @@ Options:
 
 ## Local
 
-`Copymitter` could be used localy. It will emit event on every copied file.
+`Copymitter` can used localy. It will emit event on every copied file.
 Good for making progress bars.
 
 ### Install
 
 ```
-npm i copymitter --save
+npm i copymitter
 ```
 
 ### How to use?
@@ -76,22 +76,6 @@ cp.on('end', function() {
 });
 
 cp.pause();
-```
-
-In case of starting example output should be similar to:
-
-```
-33%
-67%
-100%
-Copying ended up
-```
-## Environments
-
-In old `node.js` environments that supports `es5` only, `copymitter` could be used with:
-
-```js
-var readify = require('copymitter/legacy');
 ```
 
 ## Related

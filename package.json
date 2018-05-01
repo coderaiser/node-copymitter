@@ -6,17 +6,7 @@
   "bin": {
     "copymitter": "bin/copymitter.js"
   },
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
   "scripts": {
-    "6to5:lib": "babel lib -d legacy/lib",
-    "6to5:bin": "babel bin -d legacy/bin",
-    "legacy:index": "echo \"module.exports = require('./lib/copymitter');\" > legacy/index.js",
-    "build": "redrun 6to5:* legacy:*",
-    "wisdom": "npm run build",
     "watch:coverage": "npm run watcher -- npm run coverage",
     "watch:test": "npm run watcher -- npm test",
     "watcher": "nodemon -w test -w lib --exec",
@@ -37,8 +27,6 @@
     "through2": "^2.0.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-preset-env": "^1.6.1",
     "coveralls": "^3.0.0",
     "eslint": "^4.0.0",
     "mkdirp": "^0.5.1",
@@ -54,9 +42,14 @@
   },
   "keywords": [
     "copy",
+    "progress",
+    "size",
     "emitter",
     "file"
   ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "author": "coderaiser <mnemonic.enemy@gmail.com> (http://coderaiser.github.io/)",
   "license": "MIT",
   "bugs": {
