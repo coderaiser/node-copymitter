@@ -3,9 +3,6 @@
   "version": "2.2.0",
   "description": "copy files with emitter",
   "main": "lib/copymitter.js",
-  "bin": {
-    "copymitter": "bin/copymitter.js"
-  },
   "scripts": {
     "watch:coverage": "npm run watcher -- npm run coverage",
     "watch:test": "npm run watcher -- npm test",
@@ -13,15 +10,12 @@
     "test": "tape test/*.js",
     "coverage": "nyc npm test",
     "report": "nyc report --reporter=text-lcov | coveralls",
-    "lint:eslint": "eslint lib test",
-    "lint:eslint:bin": "eslint --rule 'no-console:0' bin",
-    "lint": "redrun lint:*"
+    "lint": "eslint lib test"
   },
   "dependencies": {
     "currify": "^2.0.6",
     "debug": "^3.0.0",
     "findit": "^2.0.0",
-    "glob": "^7.1.0",
     "pipe-io": "^2.0.5",
     "squad": "^2.0.0",
     "through2": "^2.0.3"

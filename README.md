@@ -1,26 +1,6 @@
 # Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Dependency Status][DependencyStatusIMGURL]][DependencyStatusURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
 
-Copy files with emitter.
-
-## Global
-
-`Copymitter` could be installed global with
-
-```
-npm i copymitter -g
-```
-And used this way:
-
-```
-Usage: copymitter [filename] [distanation path]
-Options:
-  -h, --help      display this help and exit
-  -v, --version   output version information and exit
-```
-
-## Local
-
-`Copymitter` can used localy. It will emit event on every copied file.
+Copy files with emitter. It will emit event on every percent of copied chunk of data.
 Good for making progress bars.
 
 ### Install
