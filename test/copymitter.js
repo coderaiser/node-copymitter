@@ -58,7 +58,7 @@ test('folder: error EACESS', (t) => {
 });
 
 test('copymitter 1 file: to', (t) => {
-    const from = path.join(__dirname, '/../bin/');
+    const from = path.join(__dirname, '/../lib/');
     const to = '/tmp';
     const name = path.basename(__filename);
     
@@ -86,7 +86,7 @@ test('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
     fs.mkdir =  (name, mode, cb) => cb();
     fs.mkdirSync(to);
@@ -110,11 +110,11 @@ test('copymitter 1 file: to (error: EISDIR, stat error)', (t) => {
     const {stat} = fs;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
     fs.mkdirSync(to);
     
-    mkdirp.sync(to + '/bin/copymitter.js');
+    mkdirp.sync(to + '/lib/copymitter.js');
     
     const errorName = path.join(from, name, 'copymitter.js');
     
@@ -150,7 +150,7 @@ test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
     let was;
     fs.mkdir = (name, mode, cb) => {
@@ -185,9 +185,9 @@ test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
 test('copymitter 1 file: to (directory exist)', (t) => {
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
-    mkdirp.sync(path.join(to, 'bin', 'copymitter.js'));
+    mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
     
     const cp = copymitter(from, to, [
         name
@@ -207,7 +207,7 @@ test('copymitter 1 file: to (directory exist, error mkdir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
     let was;
     
@@ -222,7 +222,7 @@ test('copymitter 1 file: to (directory exist, error mkdir)', (t) => {
         cb(error);
     };
     
-    mkdirp.sync(path.join(to, 'bin', 'copymitter.js'));
+    mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
     
     const cp = copymitter(from, to, [
         name
@@ -240,7 +240,7 @@ test('copymitter 1 file: to (directory exist, error mkdir)', (t) => {
 });
 
 test('copymitter 1 file: from', (t) => {
-    const from = path.join(__dirname, '/../bin/');
+    const from = path.join(__dirname, '/../lib/');
     const to = '/tmp';
     const name = path.basename(__filename);
     
@@ -315,7 +315,7 @@ test('file: error ENOENT', (t) => {
 test('pause/continue', (t) => {
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
-    const name = 'bin';
+    const name = 'lib';
     
     mkdirp.sync(to);
     
