@@ -7,6 +7,23 @@ const mkdirp = require('mkdirp');
 const test = require('tape');
 const copymitter = require('..');
 
+test('file: no args', (t) => {
+    t.throws(copymitter, /from should be a string!/, 'should throw when no args');
+    t.end();
+});
+
+test('file: no to', (t) => {
+    const fn = () => copymitter('/hello');
+    t.throws(fn, /to should be a string!/, 'should throw when no to');
+    t.end();
+});
+
+test('file: no files', (t) => {
+    const fn = () => copymitter('/hello', '/world');
+    t.throws(fn, /files should be an array!/, 'should throw when no args');
+    t.end();
+});
+
 test('file: error EACESS', (t) => {
     const cp = copymitter(__dirname, '/', [
         path.basename(__filename)
@@ -18,46 +35,6 @@ test('file: error EACESS', (t) => {
     });
     
     cp.on('end', () => {
-        t.end();
-    });
-});
-
-test('file: error EACESS: no fs.access', (t) => {
-    const access = fs.access;
-    
-    fs.access = null;
-    
-    const cp = copymitter(__dirname, '/', [
-        path.basename(__filename)
-    ]);
-    
-    cp.on('error', (error) => {
-        t.equal(error.code, 'EACCES', error.message);
-        cp.abort();
-    });
-    
-    cp.on('end', () => {
-        fs.access = access;
-        t.end();
-    });
-});
-
-test('file: error EACESS: no fs.access, read error', (t) => {
-    const access = fs.access;
-    
-    fs.access = null;
-    
-    const cp = copymitter('/root', '/', [
-        path.basename(__filename)
-    ]);
-    
-    cp.on('error', (error) => {
-        t.equal(error.code, 'EACCES', error.message);
-        cp.abort();
-    });
-    
-    cp.on('end', () => {
-        fs.access = access;
         t.end();
     });
 });
@@ -80,7 +57,7 @@ test('folder: error EACESS', (t) => {
     });
 });
 
-test('copy 1 file: to', (t) => {
+test('copymitter 1 file: to', (t) => {
     const from = path.join(__dirname, '/../bin/');
     const to = '/tmp';
     const name = path.basename(__filename);
@@ -105,7 +82,7 @@ test('copy 1 file: to', (t) => {
     });
 });
 
-test('copy 1 file: to (error: EISDIR, not create dir)', (t) => {
+test('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -129,7 +106,7 @@ test('copy 1 file: to (error: EISDIR, not create dir)', (t) => {
     });
 });
 
-test('copy 1 file: to (error: EISDIR, stat error)', (t) => {
+test('copymitter 1 file: to (error: EISDIR, stat error)', (t) => {
     const {stat} = fs;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -169,7 +146,7 @@ test('copy 1 file: to (error: EISDIR, stat error)', (t) => {
     });
 });
 
-test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
+test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -205,7 +182,7 @@ test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
     });
 });
 
-test('copy 1 file: to (directory exist)', (t) => {
+test('copymitter 1 file: to (directory exist)', (t) => {
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
     const name = 'bin';
@@ -217,7 +194,7 @@ test('copy 1 file: to (directory exist)', (t) => {
     ]);
     
     cp.once('progress', (n) => {
-        t.equal(n, 50, 'should equal');
+        t.equal(n, 100, 'should equal');
     });
     
     cp.on('end', () => {
@@ -226,7 +203,7 @@ test('copy 1 file: to (directory exist)', (t) => {
     });
 });
  
-test('copy 1 file: to (directory exist, error mkdir)', (t) => {
+test('copymitter 1 file: to (directory exist, error mkdir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -262,7 +239,7 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     });
 });
 
-test('copy 1 file: from', (t) => {
+test('copymitter 1 file: from', (t) => {
     const from = path.join(__dirname, '/../bin/');
     const to = '/tmp';
     const name = path.basename(__filename);
@@ -293,7 +270,7 @@ test('copy 1 file: from', (t) => {
     });
 });
 
-test('copy directories', (t) => {
+test('copymitter directories', (t) => {
     const from = path.join(__dirname, '..', 'node_modules');
     const to = '/tmp';
     const names = [
@@ -307,7 +284,7 @@ test('copy directories', (t) => {
         const dir = path.join(to, names[0]);
         const stat = fs.statSync(dir);
         
-        t.ok(stat, 'should copy dir');
+        t.ok(stat, 'should copymitter dir');
         
         rimraf.sync(names[0]);
         rimraf.sync(names[1]);
@@ -357,84 +334,5 @@ test('pause/continue', (t) => {
     });
     
     cp.pause();
-});
-
-test('cpOneFile: error: EPERM', (t) => {
-    const from = __dirname;
-    const to = '/tmp';
-    const name = 'bin';
-    
-    const {stat, access} = fs;
-    const error = Error('Operation not permitted');
-    
-    let once;
-    
-    fs.stat = (name, fn) => {
-        if (once)
-            return fn(error);
-        
-        once = true;
-        stat(name, fn);
-    };
-    
-    fs.access = (from, how, fn) => {
-        fn();
-    };
-    
-    const cp = copymitter(from, to, [
-        name
-    ]);
-    
-    cp.on('error', (e) => {
-        t.equal(e, error, 'should operation be not permitted');
-        cp.continue();
-    });
-    
-    cp.on('end', () => {
-        fs.stat = stat;
-        fs.access = access;
-        t.end();
-    });
-});
-
-test('cpOneFile: error: EPERM: no fs.access', (t) => {
-    const from = __dirname;
-    const to = '/tmp';
-    const name = 'copymitter.js';
-    
-    const {stat, open, access} = fs;
-    const error = Error('Operation not permitted');
-    
-    let count;
-    
-    fs.stat = (name, fn) => {
-        if (count === 2)
-            return fn(error);
-        
-        ++count;
-        stat(name, fn);
-    };
-    
-    fs.access = null;
-    
-    fs.open = (name, how, fn) => {
-        fn(error);
-    };
-    
-    const cp = copymitter(from, to, [
-        name
-    ]);
-    
-    cp.on('error', (e) => {
-        t.equal(e, error, 'should operation be not permitted');
-        cp.continue();
-    });
-    
-    cp.on('end', () => {
-        fs.stat = stat;
-        fs.open = open;
-        fs.access = access;
-        t.end();
-    });
 });
 
