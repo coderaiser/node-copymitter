@@ -39,7 +39,7 @@ test('file: error EACESS', (t) => {
     });
 });
 
-test('folder: error EACESS', (t) => {
+test('directory: error EACESS', (t) => {
     const from = path.join(__dirname, '..');
     const name = path.basename(__dirname);
     
@@ -193,8 +193,9 @@ test('copymitter 1 file: to (directory exist)', (t) => {
         name
     ]);
     
-    cp.once('progress', (n) => {
-        t.equal(n, 100, 'should equal');
+    cp.on('progress', (n) => {
+        if (n === 100)
+            t.pass('should equal');
     });
     
     cp.on('end', () => {
