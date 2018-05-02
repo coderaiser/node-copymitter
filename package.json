@@ -18,9 +18,11 @@
     "@cloudcmd/copy-file": "^1.0.0",
     "currify": "^2.0.6",
     "debug": "^3.0.0",
+    "es6-promisify": "^6.0.0",
     "findit": "^2.0.0",
     "squad": "^2.0.0",
-    "through2": "^2.0.3"
+    "through2": "^2.0.3",
+    "zames": "^1.1.3"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

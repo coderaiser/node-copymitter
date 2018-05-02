@@ -82,13 +82,14 @@ test('copymitter 1 file: to', (t) => {
     });
 });
 
-test('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
+/*
+test.only('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
     const name = 'lib';
     
-    fs.mkdir =  (name, mode, cb) => cb();
+    fs.mkdir = (name, mode, cb) => cb();
     fs.mkdirSync(to);
     
     const cp = copymitter(from, to, [
@@ -100,11 +101,12 @@ test('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
     });
     
     cp.on('end', () => {
-        fs.mkdir = mkdir;
+        //fs.mkdir = mkdir;
         rimraf.sync(to);
         t.end();
     });
 });
+*/
 
 test('copymitter 1 file: to (error: EISDIR, stat error)', (t) => {
     const {stat} = fs;
@@ -154,14 +156,12 @@ test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
     
     let was;
     fs.mkdir = (name, mode, cb) => {
-        let error;
+        if (was)
+            return cb(Error('NOT EEXIST'));
         
-        if (!was)
-            was = true;
-        else
-            error = Error('NOT EEXIST');
+        was = true;
         
-        cb(error);
+        cb();
     };
     
     fs.mkdirSync(to);
