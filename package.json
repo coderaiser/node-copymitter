@@ -15,10 +15,10 @@
     "lint:test": "eslint --rule 'node/no-unsupported-features:0' test"
   },
   "dependencies": {
+    "@cloudcmd/copy-file": "^1.0.0",
     "currify": "^2.0.6",
     "debug": "^3.0.0",
     "findit": "^2.0.0",
-    "pipe-io": "^3.0.0",
     "squad": "^2.0.0",
     "through2": "^2.0.3"
   },
