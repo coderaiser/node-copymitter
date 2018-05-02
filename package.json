@@ -10,7 +10,9 @@
     "test": "tape test/*.js",
     "coverage": "nyc npm test",
     "report": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint lib test"
+    "lint": "redrun lint:*",
+    "lint:lib": "eslint lib",
+    "lint:test": "eslint --rule 'node/no-unsupported-features:0' test"
   },
   "dependencies": {
     "currify": "^2.0.6",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "coveralls": "^3.0.0",
     "eslint": "^4.0.0",
+    "eslint-plugin-node": "^6.0.1",
     "mkdirp": "^0.5.1",
     "nodemon": "^1.11.0",
     "nyc": "^11.0.2",
