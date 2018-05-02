@@ -82,32 +82,6 @@ test('copymitter 1 file: to', (t) => {
     });
 });
 
-/*
-test.only('copymitter 1 file: to (error: EISDIR, not create dir)', (t) => {
-    const mkdir = fs.mkdir;
-    const from = path.join(__dirname, '..');
-    const to = path.join('/tmp', String(Math.random()));
-    const name = 'lib';
-    
-    fs.mkdir = (name, mode, cb) => cb();
-    fs.mkdirSync(to);
-    
-    const cp = copymitter(from, to, [
-        name
-    ]);
-    
-    cp.on('error', (error) => {
-        t.ok(error, 'should be error');
-    });
-    
-    cp.on('end', () => {
-        //fs.mkdir = mkdir;
-        rimraf.sync(to);
-        t.end();
-    });
-});
-*/
-
 test('copymitter 1 file: to (error: EISDIR, stat error)', (t) => {
     const {stat} = fs;
     const from = path.join(__dirname, '..');
