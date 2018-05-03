@@ -1,3 +1,10 @@
+2018.05.03, v3.1.0
+
+feature:
+- (copymitter) add ability to emit directory
+- (copymitter) enoent: rm redundant
+
+
 2018.05.02, v3.0.5
 
 fix:
