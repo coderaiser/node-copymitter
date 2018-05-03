@@ -57,7 +57,7 @@ test('directory: error EACESS', (t) => {
     });
 });
 
-test('copymitter 1 file: to', (t) => {
+test('copy 1 file: to', (t) => {
     const from = path.join(__dirname, '/../lib/');
     const to = '/tmp';
     const name = path.basename(__filename);
@@ -82,7 +82,7 @@ test('copymitter 1 file: to', (t) => {
     });
 });
 
-test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
+test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -116,7 +116,7 @@ test('copymitter 1 file: to (error: ENOENT, create dir error)', (t) => {
     });
 });
 
-test('copymitter 1 file: to (directory exist)', (t) => {
+test('copy 1 file: to (directory exist)', (t) => {
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
     const name = 'lib';
@@ -138,7 +138,7 @@ test('copymitter 1 file: to (directory exist)', (t) => {
     });
 });
  
-test('copymitter 1 file: to (directory exist, error mkdir)', (t) => {
+test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
     const to = path.join('/tmp', String(Math.random()));
@@ -219,7 +219,7 @@ test('copy directories', (t) => {
         const dir = path.join(to, names[0]);
         const stat = fs.statSync(dir);
         
-        t.ok(stat, 'should copy dir');
+        t.ok(stat, 'should copymitter dir');
         
         rimraf.sync(names[0]);
         rimraf.sync(names[1]);
