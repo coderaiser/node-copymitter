@@ -1,11 +1,17 @@
 'use strict';
 
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+const {tmpdir} = require('os');
+
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const test = require('tape');
 const copymitter = require('..');
+
+const temp = () => {
+    return fs.mkdtempSync(path.join(tmpdir(), `copymitter-`));
+};
 
 test('file: no args', (t) => {
     t.throws(copymitter, /from should be a string!/, 'should throw when no args');
@@ -59,7 +65,7 @@ test('directory: error EACESS', (t) => {
 
 test('copy 1 file: to', (t) => {
     const from = path.join(__dirname, '/../lib/');
-    const to = '/tmp';
+    const to = temp();
     const name = path.basename(__filename);
     
     const cp = copymitter(from, to, [
@@ -78,6 +84,7 @@ test('copy 1 file: to', (t) => {
     });
     
     cp.on('end', () => {
+        rimraf.sync(to);
         t.end();
     });
 });
@@ -85,7 +92,7 @@ test('copy 1 file: to', (t) => {
 test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
-    const to = path.join('/tmp', String(Math.random()));
+    const to = temp();
     const name = 'lib';
     
     let was;
@@ -97,8 +104,6 @@ test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
         
         cb();
     };
-    
-    fs.mkdirSync(to);
     
     const cp = copymitter(from, to, [
         name
@@ -118,7 +123,7 @@ test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
 
 test('copy 1 file: to (directory exist)', (t) => {
     const from = path.join(__dirname, '..');
-    const to = path.join('/tmp', String(Math.random()));
+    const to = temp();
     const name = 'lib';
     
     mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
@@ -137,11 +142,11 @@ test('copy 1 file: to (directory exist)', (t) => {
         t.end();
     });
 });
- 
+
 test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     const mkdir = fs.mkdir;
     const from = path.join(__dirname, '..');
-    const to = path.join('/tmp', String(Math.random()));
+    const to = temp();
     const name = 'lib';
     
     let was;
@@ -176,7 +181,7 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
 
 test('copy 1 file: from', (t) => {
     const from = path.join(__dirname, '/../lib/');
-    const to = '/tmp';
+    const to = temp();
     const name = path.basename(__filename);
     
     const cp = copymitter(from, to, [
@@ -201,13 +206,14 @@ test('copy 1 file: from', (t) => {
     });
     
     cp.on('end', () => {
+        rimraf.sync(to);
         t.end();
     });
 });
 
 test('copy directories', (t) => {
     const from = path.join(__dirname, '..', 'node_modules');
-    const to = '/tmp';
+    const to = temp();
     const names = [
         'tape',
         'rimraf',
@@ -219,18 +225,16 @@ test('copy directories', (t) => {
         const dir = path.join(to, names[0]);
         const stat = fs.statSync(dir);
         
+        rimraf.sync(to);
+        
         t.ok(stat, 'should copymitter dir');
-        
-        rimraf.sync(names[0]);
-        rimraf.sync(names[1]);
-        
         t.end();
     });
 });
 
 test('file: error ENOENT', (t) => {
     const from = '/';
-    const to = '/tmp';
+    const to = temp();
     
     const cp = copymitter(from, to, [
         Math.random()
@@ -243,13 +247,14 @@ test('file: error ENOENT', (t) => {
     });
     
     cp.on('end', () => {
+        rimraf.sync(to);
         t.end();
     });
 });
 
 test('pause/continue', (t) => {
     const from = path.join(__dirname, '..');
-    const to = path.join('/tmp', String(Math.random()));
+    const to = temp();
     const name = 'lib';
     
     mkdirp.sync(to);
