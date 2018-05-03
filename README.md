@@ -24,8 +24,12 @@ const cp = copymitter(from, to, [
     'package.json'
 ]);
 
-cp.on('file', function(name) {
-    console.log(name);
+cp.on('file', function(from, to) {
+    console.log(`${from} -> ${to}`);
+});
+
+cp.on('directory', function(from, to) {
+    console.log(`${from} -> ${to}`);
 });
 
 cp.on('progress', function(percent) {

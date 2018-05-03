@@ -63,7 +63,7 @@ test('directory: error EACESS', (t) => {
     });
 });
 
-test('copy 1 file: to', (t) => {
+test('copy 1 file: to: src', (t) => {
     const from = path.join(__dirname, '/../lib/');
     const to = temp();
     const name = path.basename(__filename);
@@ -72,10 +72,37 @@ test('copy 1 file: to', (t) => {
         name
     ]);
     
-    cp.on('file', (file) => {
+    cp.on('file', (src) => {
+        const fromFull = path.join(from, name);
+        const toFull = path.join(to, name);
+        
+        t.equal(src, fromFull, 'file paths should be equal');
+        fs.unlinkSync(toFull);
+    });
+    
+    cp.on('progress', (progress) => {
+        t.equal(progress, 100, 'progress');
+    });
+    
+    cp.on('end', () => {
+        rimraf.sync(to);
+        t.end();
+    });
+});
+
+test('copy 1 file: to: dest', (t) => {
+    const from = path.join(__dirname, '/../lib/');
+    const to = temp();
+    const name = path.basename(__filename);
+    
+    const cp = copymitter(from, to, [
+        name
+    ]);
+    
+    cp.on('file', (src, dest) => {
         const full = path.join(to, name);
         
-        t.equal(file, full, 'file paths should be equal');
+        t.equal(dest, full, 'file paths should be equal');
         fs.unlinkSync(full);
     });
     
@@ -211,7 +238,7 @@ test('copy 1 file: from', (t) => {
     });
 });
 
-test('copy directories', (t) => {
+test('copy directories: exist', (t) => {
     const from = path.join(__dirname, '..', 'node_modules');
     const to = temp();
     const names = [
@@ -227,9 +254,55 @@ test('copy directories', (t) => {
         
         rimraf.sync(to);
         
-        t.ok(stat, 'should copymitter dir');
+        t.ok(stat, 'should copy dir');
         t.end();
     });
+});
+
+test('copy directories: emit: src', (t) => {
+    const from = path.join(__dirname, '..', 'node_modules');
+    const to = temp();
+    const name = 'tape';
+    const names = [
+        name
+    ];
+    
+    const cp = copymitter(from, to, names);
+    
+    cp.once('directory', (src) => {
+        const fromFull = path.join(from, name);
+        
+        t.equal(src, fromFull, 'should equal');
+    });
+    
+    cp.on('end', () => {
+        rimraf.sync(to);
+        t.end();
+    });
+
+});
+
+test('copy directories: emit: dest', (t) => {
+    const from = path.join(__dirname, '..', 'node_modules');
+    const to = temp();
+    const name = 'tape';
+    const names = [
+        name
+    ];
+    
+    const cp = copymitter(from, to, names);
+    
+    cp.once('directory', (src, dest) => {
+        const toFull = path.join(to, name);
+        
+        t.equal(dest, toFull, 'should equal');
+    });
+    
+    cp.on('end', () => {
+        rimraf.sync(to);
+        t.end();
+    });
+
 });
 
 test('file: error ENOENT', (t) => {
