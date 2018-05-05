@@ -178,7 +178,7 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     
     let was;
     
-    fs.mkdir =  (name, mode, cb) => {
+    stub('mkdirp', (name, mode, cb) => {
         let error;
         
         if (!was)
@@ -187,7 +187,9 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
             error = Error('NOT EEXIST');
         
         cb(error);
-    };
+    });
+    
+    const copymitter = rerequire('..')
     
     mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
     
@@ -199,6 +201,7 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
         t.ok(error, 'should be error: ' + error.message);
         cp.abort();
     });
+    
     cp.on('end', () => {
         fs.mkdir = mkdir;
         rimraf.sync(to);
@@ -270,8 +273,6 @@ test('copy directories: emit: src', (t) => {
     const cp = copymitter(from, to, names);
     
     cp.once('directory', (src) => {
-        const fromFull = path.join(from, name);
-        
         t.ok(src, 'should emit directory name');
     });
     
@@ -346,4 +347,13 @@ test('pause/continue', (t) => {
     
     cp.pause();
 });
+
+function stub(name, fn) {
+    require.cache[require.resolve(name)].exports = fn;
+}
+
+function rerequire(name) {
+    delete require.cache[require.resolve(name)];
+    return require(name);
+}
 
