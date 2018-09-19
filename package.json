@@ -12,7 +12,7 @@
     "report": "nyc report --reporter=text-lcov | coveralls",
     "lint": "redrun lint:*",
     "lint:lib": "eslint lib",
-    "lint:test": "eslint --rule 'node/no-unsupported-features:0' test"
+    "lint:test": "eslint -c .eslintrc.test test"
   },
   "dependencies": {
     "@cloudcmd/copy-file": "^1.0.0",
