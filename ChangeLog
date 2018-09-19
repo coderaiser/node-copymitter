@@ -1,3 +1,13 @@
+2018.09.19, v3.2.2
+
+fix:
+- (package) update debug to secure version
+
+feature:
+- (package) eslint-plugin-node v7.0.1
+- (package) eslint v5.6.0
+
+
 2018.05.06, v3.2.1
 
 feature:
