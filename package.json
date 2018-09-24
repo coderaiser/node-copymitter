@@ -22,7 +22,7 @@
     "findit2": "^2.2.3",
     "fullstore": "^1.1.0",
     "mkdirp": "^0.5.1",
-    "squad": "^2.0.0",
+    "squad": "^3.0.0",
     "through2": "^2.0.3",
     "wraptile": "^2.0.0",
     "zames": "^2.0.0"
