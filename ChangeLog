@@ -1,3 +1,10 @@
+2018.09.24, v3.2.3
+
+feature:
+- (package) nyc v13.0.1
+- (package) squad v3.0.0
+
+
 2018.09.19, v3.2.2
 
 fix:
