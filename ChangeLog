@@ -1,3 +1,9 @@
+2018.09.26, v4.0.2
+
+fix:
+- (copymitter) rm .eslintrc.test from npm
+
+
 2018.09.26, v4.0.1
 
 feature:
