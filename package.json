@@ -15,7 +15,7 @@
     "lint:test": "eslint -c .eslintrc.test test"
   },
   "dependencies": {
-    "@cloudcmd/copy-file": "^1.0.0",
+    "@cloudcmd/copy-file": "^2.0.0",
     "currify": "^2.0.6",
     "debug": "^3.2.5",
     "es6-promisify": "^6.0.0",
@@ -49,7 +49,7 @@
     "file"
   ],
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   },
   "author": "coderaiser <mnemonic.enemy@gmail.com> (http://coderaiser.github.io/)",
   "license": "MIT",
