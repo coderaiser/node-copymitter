@@ -32,7 +32,7 @@
     "eslint-plugin-node": "^7.0.1",
     "nodemon": "^1.11.0",
     "nyc": "^13.0.1",
-    "redrun": "^6.0.0",
+    "redrun": "^7.0.2",
     "rimraf": "^2.4.4",
     "tape": "^4.2.0"
   },
