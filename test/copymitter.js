@@ -241,6 +241,39 @@ test('copy 1 file: from', (t) => {
     });
 });
 
+test('copy 1 file: from: symlink', (t) => {
+    const from = path.join(__dirname, 'fixture');
+    const to = temp();
+    
+    const name = 'symlink';
+    
+    const cp = copymitter(from, to, [
+        name
+    ]);
+    
+    cp.on('file', (file) => {
+        const full = path.join(from, name);
+        
+        const dataFile = fs.readFileSync(file, 'utf8');
+        const dataFull = fs.readFileSync(full, 'utf8');
+        const statFile = fs.statSync(file);
+        const statFull = fs.statSync(full);
+        
+        t.equal(dataFile, dataFull, 'files data should be equal');
+        t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+        fs.unlinkSync(path.join(to, name));
+    });
+    
+    cp.on('progress', (progress) => {
+        t.equal(progress, 100, 'progress');
+    });
+    
+    cp.on('end', () => {
+        rimraf.sync(to);
+        t.end();
+    });
+});
+
 test('copy directories: exist', (t) => {
     const from = path.join(__dirname, '..', 'node_modules');
     const to = temp();
