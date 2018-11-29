@@ -55,5 +55,8 @@
   "bugs": {
     "url": "https://github.com/coderaiser/node-copymitter/issues"
   },
-  "homepage": "https://github.com/coderaiser/node-copymitter"
+  "homepage": "https://github.com/coderaiser/node-copymitter",
+  "publishConfig": {
+    "access": "public"
+  }
 }
