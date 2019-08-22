@@ -35,7 +35,7 @@
     "nyc": "^14.1.1",
     "putout": "^5.7.1",
     "redrun": "^7.0.2",
-    "rimraf": "^2.4.4",
+    "rimraf": "^3.0.0",
     "supertape": "^1.2.3"
   },
   "repository": {
