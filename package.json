@@ -30,11 +30,10 @@
     "eslint": "^6.2.1",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-putout": "^2.0.0",
-    "madrun": "^2.5.0",
+    "madrun": "^3.0.5",
     "nodemon": "^1.11.0",
     "nyc": "^14.1.1",
     "putout": "^6.0.0",
-    "redrun": "^7.0.2",
     "rimraf": "^3.0.0",
     "supertape": "^1.2.3"
   },
