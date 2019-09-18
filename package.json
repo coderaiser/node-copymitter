@@ -22,7 +22,7 @@
     "mkdirp": "^0.5.1",
     "squad": "^3.0.0",
     "through2": "^3.0.0",
-    "wraptile": "^2.0.0",
+    "wraptile": "^3.0.0",
     "zames": "^2.0.0"
   },
   "devDependencies": {
