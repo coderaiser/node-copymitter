@@ -13,3 +13,5 @@ notifications:
         on_success: change
         on_failure: change
 
+cache: false
+
