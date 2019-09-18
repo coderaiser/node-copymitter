@@ -33,7 +33,7 @@
     "madrun": "^2.5.0",
     "nodemon": "^1.11.0",
     "nyc": "^14.1.1",
-    "putout": "^5.7.1",
+    "putout": "^6.0.0",
     "redrun": "^7.0.2",
     "rimraf": "^3.0.0",
     "supertape": "^1.2.3"
