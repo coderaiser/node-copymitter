@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@cloudcmd/copy-file": "^2.0.0",
-    "currify": "^3.0.0",
+    "currify": "^4.0.0",
     "debug": "^4.0.1",
     "findit2": "^2.2.3",
     "fullstore": "^2.0.2",
@@ -23,7 +23,7 @@
     "squad": "^3.0.0",
     "through2": "^3.0.0",
     "wraptile": "^3.0.0",
-    "zames": "^2.0.0"
+    "zames": "^3.0.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
