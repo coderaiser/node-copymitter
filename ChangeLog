@@ -1,3 +1,9 @@
+2019.10.07, v5.0.0
+
+feature:
+- (copymitter) drop support of node < 10
+
+
 2019.09.20, v4.0.7
 
 feature:
