@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const {tmpdir} = require('os');
 
+const {join, basename} = path;
+
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const test = require('supertape');
@@ -275,17 +277,17 @@ test('copy 1 file: from: symlink', (t) => {
 });
 
 test('copy directories: exist', (t) => {
-    const from = path.join(__dirname, '..', 'node_modules');
     const to = temp();
+    const from = join(__dirname);
+    const name = basename(__filename);
     const names = [
-        'tape',
-        'rimraf',
+        name,
     ];
     
     const cp = copymitter(from, to, names);
     
     cp.on('end', () => {
-        const dir = path.join(to, names[0]);
+        const dir = join(to, name);
         const stat = fs.statSync(dir);
         
         rimraf.sync(to);

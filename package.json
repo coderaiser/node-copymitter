@@ -13,6 +13,13 @@
     "lint": "madrun lint",
     "fix:lint": "madrun fix:lint"
   },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      "test",
+      "madrun.js"
+    ]
+  },
   "dependencies": {
     "@cloudcmd/copy-file": "^2.0.0",
     "currify": "^4.0.0",
