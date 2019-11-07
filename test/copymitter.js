@@ -298,9 +298,9 @@ test('copy directories: exist', (t) => {
 });
 
 test('copy directories: emit: src', (t) => {
-    const from = path.join(__dirname, '..', 'node_modules');
+    const from = __dirname;
     const to = temp();
-    const name = 'tape';
+    const name = path.basename(__filename);
     const names = [
         name,
     ];
