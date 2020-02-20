@@ -311,7 +311,6 @@ test('copy directories: emit: src', (t) => {
         rimraf.sync(to);
         t.end();
     });
-
 });
 
 test('copy directories: emit: dest', (t) => {
@@ -332,7 +331,6 @@ test('copy directories: emit: dest', (t) => {
         rimraf.sync(to);
         t.end();
     });
-
 });
 
 test('file: error ENOENT', (t) => {
