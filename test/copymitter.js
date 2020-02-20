@@ -49,7 +49,7 @@ test('file: error EACESS', (t) => {
 
 test('directory: error EACESS', (t) => {
     const from = path.join(__dirname, '..');
-    const name = path.basename(__dirname);
+    const name = 'package.json';
     
     const cp = copymitter(from, '/', [
         name,
@@ -180,15 +180,11 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     
     let was;
     
-    stub('mkdirp', (name, mode, cb) => {
-        let error;
+    stub('mkdirp', async () => {
+        if (was)
+            throw Error('NOT EEXIST');
         
-        if (!was)
-            was = true;
-        else
-            error = Error('NOT EEXIST');
-        
-        cb(error);
+        was = true;
     });
     
     const copymitter = rerequire('..');
