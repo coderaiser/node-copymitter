@@ -21,7 +21,7 @@
     ]
   },
   "dependencies": {
-    "@cloudcmd/copy-file": "^2.0.0",
+    "@cloudcmd/copy-file": "^3.0.0",
     "currify": "^4.0.0",
     "debug": "^4.0.1",
     "findit2": "^2.2.3",
