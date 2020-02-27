@@ -1,3 +1,10 @@
+2020.02.27, v5.0.2
+
+feature:
+- (package) try-to-catch v3.0.0
+- (package) @cloudcmd/copy-file v3.0.0
+
+
 2020.02.21, v5.0.1
 
 feature:
