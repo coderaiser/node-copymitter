@@ -29,7 +29,7 @@
     "mkdirp": "^1.0.3",
     "squad": "^3.0.0",
     "through2": "^3.0.0",
-    "try-to-catch": "^2.0.1",
+    "try-to-catch": "^3.0.0",
     "wraptile": "^3.0.0",
     "zames": "^3.0.0"
   },
