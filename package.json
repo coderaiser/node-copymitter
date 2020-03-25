@@ -25,7 +25,7 @@
     "currify": "^4.0.0",
     "debug": "^4.0.1",
     "findit2": "^2.2.3",
-    "fullstore": "^2.0.2",
+    "fullstore": "^3.0.0",
     "mkdirp": "^1.0.3",
     "squad": "^3.0.0",
     "through2": "^3.0.0",
