@@ -1,3 +1,9 @@
+2020.04.14, v5.0.4
+
+fix:
+- (copymitter) order (coderaiser/cloudcmd/issues/285)
+
+
 2020.03.25, v5.0.3
 
 feature:
