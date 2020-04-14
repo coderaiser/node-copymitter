@@ -24,15 +24,15 @@ const cp = copymitter(from, to, [
     'package.json'
 ]);
 
-cp.on('file', function(from, to) {
+cp.on('file', (from, to) => {
     console.log(`${from} -> ${to}`);
 });
 
-cp.on('directory', function(from, to) {
+cp.on('directory', (from, to) => {
     console.log(`${from} -> ${to}`);
 });
 
-cp.on('progress', function(percent) {
+cp.on('progress', (percent) => {
     console.log(percent);
     
     if (percent >= 50) {
@@ -46,8 +46,8 @@ cp.on('pause', () => {
     cp.continue();
 });
 
-cp.on('error', function(error, name, i, percent) {
-    console.error(percent, ' -> ', name, ':', error.message);
+cp.on('error', (error) => {
+    console.error(error.message);
     
     if (abortOnError)
         cp.abort();
@@ -55,7 +55,7 @@ cp.on('error', function(error, name, i, percent) {
         cp.continue();
 });
 
-cp.on('end', function() {
+cp.on('end', () => {
     console.log('Copying ended up');
 });
 
