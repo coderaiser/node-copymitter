@@ -1,5 +1,7 @@
 'use strict';
 
+const {once} = require('events');
+
 const fs = require('fs');
 const path = require('path');
 const {tmpdir} = require('os');
@@ -9,6 +11,9 @@ const {join, basename} = path;
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const test = require('supertape');
+const tryCatch = require('try-catch');
+const wait = require('@iocmd/wait');
+
 const copymitter = require('..');
 
 const temp = () => {
@@ -22,162 +27,133 @@ test('file: no args', (t) => {
 
 test('file: no to', (t) => {
     const fn = () => copymitter('/hello');
+    
     t.throws(fn, /to should be a string!/, 'should throw when no to');
     t.end();
 });
 
 test('file: no files', (t) => {
-    const fn = () => copymitter('/hello', '/world');
-    t.throws(fn, /files should be an array!/, 'should throw when no args');
+    const [e] = tryCatch(copymitter, '/hello', '/world');
+    
+    t.equal(e.message, 'files should be an array!', 'should throw when no args');
     t.end();
 });
 
-test('file: error EACESS', (t) => {
+test('file: error EACESS', async (t) => {
     const cp = copymitter(__dirname, '/', [
         path.basename(__filename),
     ]);
     
-    cp.on('error', (error) => {
-        t.equal(error.code, 'EACCES', error.message);
-        cp.abort();
-    });
+    const [error] = await once(cp, 'error');
     
-    cp.on('end', () => {
-        t.end();
-    });
+    t.equal(error.code, 'EACCES', error.message);
+    t.end();
 });
 
-test('directory: error EACESS', (t) => {
+test('directory: error EACESS', async (t) => {
     const from = path.join(__dirname, '..');
     const name = 'package.json';
+    const cp = copymitter(from, '/', [name]);
     
-    const cp = copymitter(from, '/', [
-        name,
-    ]);
+    const [error] = await once(cp, 'error');
     
-    cp.on('error', (error) => {
-        t.equal(error.code, 'EACCES', error.message);
-        cp.abort();
-    });
-    
-    cp.on('end', () => {
-        t.end();
-    });
+    t.equal(error.code, 'EACCES', error.message);
+    t.end();
 });
 
-test('copy 1 file: to: src', (t) => {
+test('copy 1 file: to: src', async (t) => {
     const from = path.join(__dirname, '/../lib/');
     const to = temp();
     const name = path.basename(__filename);
+    const cp = copymitter(from, to, [name]);
     
-    const cp = copymitter(from, to, [
-        name,
+    const [[progress], [src]] = await Promise.all([
+        once(cp, 'progress'),
+        once(cp, 'file'),
     ]);
     
-    cp.on('file', (src) => {
-        const fromFull = path.join(from, name);
-        const toFull = path.join(to, name);
-        
-        t.equal(src, fromFull, 'file paths should be equal');
-        fs.unlinkSync(toFull);
-    });
+    const fromFull = path.join(from, name);
+    const toFull = path.join(to, name);
     
-    cp.on('progress', (progress) => {
-        t.equal(progress, 100, 'progress');
-    });
+    fs.unlinkSync(toFull);
+    rimraf.sync(to);
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    t.equal(src, fromFull, 'file paths should be equal');
+    t.end();
 });
 
-test('copy 1 file: to: dest', (t) => {
+test('copy 1 file: to: dest', async (t) => {
     const from = path.join(__dirname, '/../lib/');
     const to = temp();
     const name = path.basename(__filename);
+    const cp = copymitter(from, to, [name]);
     
-    const cp = copymitter(from, to, [
-        name,
+    const [[progress], [src, dest]] = await Promise.all([
+        once(cp, 'progress'),
+        once(cp, 'file'),
     ]);
     
-    cp.on('file', (src, dest) => {
-        const full = path.join(to, name);
-        
-        t.equal(dest, full, 'file paths should be equal');
-        fs.unlinkSync(full);
-    });
+    const full = path.join(to, name);
+    fs.unlinkSync(full);
+    rimraf.sync(to);
     
-    cp.on('progress', (progress) => {
-        t.equal(progress, 100, 'progress');
-    });
-    
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    t.equal(dest, full, 'file paths should be equal');
+    t.equal(progress, 100, 'progress');
+    t.end();
 });
 
-test('copy 1 file: to (error: ENOENT, create dir error)', (t) => {
+test('copy 1 file: to (error: ENOENT, create dir error)', async (t) => {
     const {mkdir} = fs;
+    
     const from = path.join(__dirname, '..');
     const to = temp();
     const name = 'lib';
-    
     let was;
+    
     fs.mkdir = (name, mode, cb) => {
         if (was)
             return cb(Error('NOT EEXIST'));
         
         was = true;
-        
         cb();
     };
     
-    const cp = copymitter(from, to, [
-        name,
-    ]);
+    const cp = copymitter(from, to, [name]);
+    const [error] = await once(cp, 'error');
     
-    cp.on('error', (error) => {
-        t.ok(error, 'should be error: ' + error.message);
-        cp.abort();
-    });
+    cp.abort();
     
-    cp.on('end', () => {
-        fs.mkdir = mkdir;
-        rimraf.sync(to);
-        t.end();
-    });
+    fs.mkdir = mkdir;
+    rimraf.sync(to);
+    
+    t.ok(error, 'should be error: ' + error.message);
+    t.end();
 });
 
-test('copy 1 file: to (directory exist)', (t) => {
+test('copy 1 file: to (directory exist)', async (t) => {
     const from = path.join(__dirname, '..');
     const to = temp();
     const name = 'lib';
     
     mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
+    const cp = copymitter(from, to, [name]);
+    const [n] = await once(cp, 'progress');
     
-    const cp = copymitter(from, to, [
-        name,
-    ]);
+    if (n === 100)
+        t.pass('should equal');
     
-    cp.on('progress', (n) => {
-        if (n === 100)
-            t.pass('should equal');
-    });
+    await once(cp, 'end');
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    rimraf.sync(to);
+    t.end();
 });
 
-test('copy 1 file: to (directory exist, error mkdir)', (t) => {
+test('copy 1 file: to (directory exist, error mkdir)', async (t) => {
     const {mkdir} = fs;
+    
     const from = path.join(__dirname, '..');
     const to = temp();
     const name = 'lib';
-    
     let was;
     
     stub('mkdirp', async () => {
@@ -188,193 +164,140 @@ test('copy 1 file: to (directory exist, error mkdir)', (t) => {
     });
     
     const copymitter = rerequire('..');
-    
     mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
     
-    const cp = copymitter(from, to, [
-        name,
+    const cp = copymitter(from, to, [name]);
+    
+    const [[error]] = await Promise.all([
+        once(cp, 'error'),
     ]);
     
-    cp.on('error', (error) => {
-        t.ok(error, 'should be error: ' + error.message);
-        cp.abort();
-    });
+    fs.mkdir = mkdir;
+    rimraf.sync(to);
     
-    cp.on('end', () => {
-        fs.mkdir = mkdir;
-        rimraf.sync(to);
-        t.end();
-    });
+    t.ok(error, 'should be error: ' + error.message);
+    t.end();
 });
 
-test('copy 1 file: from', (t) => {
+test('copy 1 file: from', async (t) => {
     const from = path.join(__dirname, '/../lib/');
     const to = temp();
     const name = path.basename(__filename);
+    const cp = copymitter(from, to, [name]);
     
-    const cp = copymitter(from, to, [
-        name,
+    const [[file], [progress]] = await Promise.all([
+        once(cp, 'file'),
+        once(cp, 'progress'),
+        once(cp, 'end'),
     ]);
     
-    cp.on('file', (file) => {
-        const full = path.join(from, name);
-        
-        const dataFile = fs.readFileSync(file, 'utf8');
-        const dataFull = fs.readFileSync(full, 'utf8');
-        const statFile = fs.statSync(file);
-        const statFull = fs.statSync(full);
-        
-        t.equal(dataFile, dataFull, 'files data should be equal');
-        t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
-        fs.unlinkSync(path.join(to, name));
-    });
+    const full = path.join(from, name);
+    const dataFile = fs.readFileSync(file, 'utf8');
+    const dataFull = fs.readFileSync(full, 'utf8');
+    const statFile = fs.statSync(file);
+    const statFull = fs.statSync(full);
     
-    cp.on('progress', (progress) => {
-        t.equal(progress, 100, 'progress');
-    });
+    t.equal(dataFile, dataFull, 'files data should be equal');
+    t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+    fs.unlinkSync(path.join(to, name));
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    rimraf.sync(to);
+    t.end();
 });
 
-test('copy 1 file: from: symlink', (t) => {
+test('copy 1 file: from: symlink', async (t) => {
     const from = path.join(__dirname, 'fixture');
     const to = temp();
-    
     const name = 'symlink';
+    const cp = copymitter(from, to, [name]);
     
-    const cp = copymitter(from, to, [
-        name,
+    const [[file]] = await Promise.all([
+        once(cp, 'file'),
+        once(cp, 'end'),
     ]);
     
-    cp.on('file', (file) => {
-        const full = path.join(from, name);
-        
-        const dataFile = fs.readFileSync(file, 'utf8');
-        const dataFull = fs.readFileSync(full, 'utf8');
-        const statFile = fs.statSync(file);
-        const statFull = fs.statSync(full);
-        
-        t.equal(dataFile, dataFull, 'files data should be equal');
-        t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
-        fs.unlinkSync(path.join(to, name));
-    });
+    const full = path.join(from, name);
+    const dataFile = fs.readFileSync(file, 'utf8');
+    const dataFull = fs.readFileSync(full, 'utf8');
+    const statFile = fs.statSync(file);
+    const statFull = fs.statSync(full);
     
-    cp.on('progress', (progress) => {
-        t.equal(progress, 100, 'progress');
-    });
+    fs.unlinkSync(path.join(to, name));
+    rimraf.sync(to);
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    t.equal(dataFile, dataFull, 'files data should be equal');
+    t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+    t.end();
 });
 
-test('copy directories: exist', (t) => {
+test('copy directories: exist', async (t) => {
     const to = temp();
     const from = join(__dirname);
     const name = basename(__filename);
-    const names = [
-        name,
-    ];
-    
+    const names = [name];
     const cp = copymitter(from, to, names);
     
-    cp.on('end', () => {
-        const dir = join(to, name);
-        const stat = fs.statSync(dir);
-        
-        rimraf.sync(to);
-        
-        t.ok(stat, 'should copy dir');
-        t.end();
-    });
+    await once(cp, 'end');
+    
+    const dir = join(to, name);
+    const stat = fs.statSync(dir);
+    rimraf.sync(to);
+    t.ok(stat, 'should copy dir');
+    t.end();
 });
 
-test('copy directories: emit: src', (t) => {
+test('copy directories: emit: dest', async (t) => {
     const from = __dirname;
     const to = temp();
     const name = path.basename(__filename);
-    const names = [
-        name,
-    ];
-    
-    const cp = copymitter(from, to, names);
-    
-    cp.once('directory', (src) => {
-        t.ok(src, 'should emit directory name');
-    });
-    
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
-});
-
-test('copy directories: emit: dest', (t) => {
-    const from = __dirname;
-    const to = temp();
-    const name = path.basename(__filename);
-    const names = [
-        name,
-    ];
-    
+    const names = [name];
     const cp = copymitter(from, to, names);
     
     cp.once('directory', (src, dest) => {
         t.ok(dest, 'should emit "dest"');
     });
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    await once(cp, 'end');
+    rimraf.sync(to);
+    t.end();
 });
 
-test('file: error ENOENT', (t) => {
+test('file: error ENOENT', async (t) => {
     const from = '/';
     const to = temp();
-    
     const cp = copymitter(from, to, [
-        Math.random()
-            .toString(),
+        Math.random().toString(),
     ]);
     
-    cp.on('error', (error) => {
-        t.equal(error.code, 'ENOENT', error.message);
-        cp.abort();
-    });
+    const [[error]] = await Promise.all([
+        once(cp, 'error'),
+    ]);
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
+    rimraf.sync(to);
+    
+    t.equal(error.code, 'ENOENT', error.message);
+    t.end();
 });
 
-test('pause/continue', (t) => {
+test('pause/continue', async (t) => {
     const from = path.join(__dirname, '..');
     const to = temp();
     const name = 'lib';
-    
     mkdirp.sync(to);
+    const cp = copymitter(from, to, [name]);
     
-    const cp = copymitter(from, to, [
-        name,
+    const pause = cp.pause.bind(cp);
+    await Promise.all([
+        once(cp, 'pause'),
+        wait(pause),
     ]);
     
-    cp.on('pause', () => {
-        t.pass('should emit pause');
-        cp.continue();
-    });
+    cp.continue();
     
-    cp.on('end', () => {
-        rimraf.sync(to);
-        t.end();
-    });
-    
-    cp.pause();
+    await once(cp, 'end');
+    rimraf.sync(to);
+    t.pass('should emit pause');
+    t.end();
 });
 
 function stub(name, fn) {

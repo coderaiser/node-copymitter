@@ -33,6 +33,7 @@
     "zames": "^3.0.0"
   },
   "devDependencies": {
+    "@iocmd/wait": "^1.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^6.2.1",
     "eslint-plugin-node": "^11.0.0",
