@@ -15,9 +15,8 @@
   },
   "nyc": {
     "exclude": [
-      "**/*.spec.js",
       "test",
-      "madrun.js"
+      ".madrun.js"
     ]
   },
   "dependencies": {
