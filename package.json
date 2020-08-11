@@ -43,7 +43,8 @@
     "nyc": "^15.0.0",
     "putout": "^9.11.3",
     "rimraf": "^3.0.0",
-    "supertape": "^2.0.1"
+    "supertape": "^2.0.1",
+    "try-catch": "^3.0.0"
   },
   "repository": {
     "type": "git",
