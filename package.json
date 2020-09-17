@@ -40,7 +40,7 @@
     "madrun": "^7.0.2",
     "nodemon": "^2.0.2",
     "nyc": "^15.0.0",
-    "putout": "^9.11.3",
+    "putout": "^10.0.1",
     "rimraf": "^3.0.0",
     "supertape": "^2.0.1",
     "try-catch": "^3.0.0"
