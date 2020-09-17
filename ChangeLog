@@ -1,3 +1,12 @@
+2020.09.17, v5.0.7
+
+fix:
+- (copymitter) add support of empty files
+
+feature:
+- (package) putout v10.0.1
+
+
 2020.08.11, v5.0.6
 
 feature:
