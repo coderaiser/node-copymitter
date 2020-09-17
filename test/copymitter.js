@@ -13,8 +13,11 @@ const mkdirp = require('mkdirp');
 const test = require('supertape');
 const tryCatch = require('try-catch');
 const wait = require('@iocmd/wait');
+const mockRequire = require('mock-require');
 
 const copymitter = require('..');
+
+const {reRequire} = mockRequire;
 
 const temp = () => {
     return fs.mkdtempSync(path.join(tmpdir(), `copymitter-`));
@@ -156,14 +159,14 @@ test('copy 1 file: to (directory exist, error mkdir)', async (t) => {
     const name = 'lib';
     let was;
     
-    stub('mkdirp', async () => {
+    mockRequire('mkdirp', async () => {
         if (was)
             throw Error('NOT EEXIST');
         
         was = true;
     });
     
-    const copymitter = rerequire('..');
+    const copymitter = reRequire('..');
     mkdirp.sync(path.join(to, 'lib', 'copymitter.js'));
     
     const cp = copymitter(from, to, [name]);
@@ -300,12 +303,19 @@ test('pause/continue', async (t) => {
     t.end();
 });
 
-function stub(name, fn) {
-    require.cache[require.resolve(name)].exports = fn;
-}
-
-function rerequire(name) {
-    delete require.cache[require.resolve(name)];
-    return require(name);
-}
-
+test('copy empty file: from', async (t) => {
+    const from = path.join(__dirname, 'fixture');
+    const to = temp();
+    const name = 'empty.txt';
+    const cp = copymitter(from, to, [name]);
+    
+    const [[progress]] = await Promise.all([
+        once(cp, 'progress'),
+        once(cp, 'end'),
+    ]);
+    
+    rimraf.sync(to);
+    
+    t.equal(progress, 100);
+    t.end();
+});
