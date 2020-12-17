@@ -24,14 +24,15 @@ const temp = () => {
 };
 
 test('file: no args', (t) => {
-    t.throws(copymitter, /from should be a string!/, 'should throw when no args');
+    const [error] = tryCatch(copymitter);
+    t.equal(error.message, 'from should be a string!', 'should throw when no args');
     t.end();
 });
 
 test('file: no to', (t) => {
-    const fn = () => copymitter('/hello');
+    const [error] = tryCatch(copymitter, 'hello');
     
-    t.throws(fn, /to should be a string!/, 'should throw when no to');
+    t.equal(error.message, 'to should be a string!', 'should throw when no to');
     t.end();
 });
 
