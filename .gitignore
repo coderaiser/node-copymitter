@@ -6,3 +6,5 @@ modules
 yarn-error.log
 .putoutcache
 
+*.swp
+coverage

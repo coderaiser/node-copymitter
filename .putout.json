@@ -1,0 +1,7 @@
+{
+    "match": {
+        "lib": {
+            "promises/add-missing-await": "off"
+        }
+    }
+}
