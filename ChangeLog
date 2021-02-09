@@ -1,3 +1,18 @@
+2021.02.09, v6.0.0
+
+feature:
+- feature(copymitter) add redzip
+- feature(package) drop support of node < 14
+- feature(package) supertape v4.9.1
+- feature(package) putout v14.1.1
+- feature(package) eslint-plugin-putout v7.1.1
+- feature(package) supertape v3.9.1
+- feature(package) eslint-plugin-putout v6.10.0
+- feature(package) putout v12.5.1
+- feature(package) madrun v8.0.5
+
+
+
 2020.09.17, v5.0.7
 
 fix:
