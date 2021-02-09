@@ -1,6 +1,6 @@
 # Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Dependency Status][DependencyStatusIMGURL]][DependencyStatusURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
 
-Copy files with emitter. It will emit event on every percent of copied chunk of data.
+Copy files with emitter (even from and to `zip archives`). It will emit event on every percent of copied chunk of data.
 Good for making progress bars.
 
 ### Install
