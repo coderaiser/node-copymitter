@@ -52,7 +52,7 @@
     "file"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "author": "coderaiser <mnemonic.enemy@gmail.com> (http://coderaiser.github.io/)",
   "license": "MIT",
