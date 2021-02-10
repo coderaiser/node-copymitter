@@ -1,3 +1,10 @@
+2021.02.10, v6.0.1
+
+feature:
+- feature(package) @cloudcmd/copy-file v4.0.0
+
+
+
 2021.02.09, v6.0.0
 
 feature:
