@@ -3,6 +3,10 @@
 const {once} = require('events');
 
 const fs = require('fs');
+const {
+    mkdir,
+    rmdir,
+} = require('fs/promises');
 const {tmpdir} = require('os');
 const {join, basename} = require('path');
 
@@ -139,7 +143,10 @@ test('copy 1 file: to (directory exist)', async (t) => {
     const to = temp();
     const name = 'lib';
     
-    mkdirp.sync(join(to, 'lib', 'copymitter.js'));
+    await mkdir(to, {
+        recursive: true,
+    });
+    
     const cp = copymitter(from, to, [name]);
     const [n] = await once(cp, 'progress');
     
@@ -148,7 +155,10 @@ test('copy 1 file: to (directory exist)', async (t) => {
     
     await once(cp, 'end');
     
-    rimraf.sync(to);
+    await rmdir(to, {
+        recursive: true,
+    });
+    
     t.end();
 });
 
@@ -247,8 +257,28 @@ test('copy directories: exist', async (t) => {
     
     const dir = join(to, name);
     const stat = fs.statSync(dir);
-    rimraf.sync(to);
+    
+    await rmdir(to, {
+        recursive: true,
+    });
+    
     t.ok(stat, 'should copy dir');
+    t.end();
+});
+
+test('copy directories: error', async (t) => {
+    const from = join(__dirname, 'fixture');
+    const dir = join(__dirname, 'fixture', 'empty-directory');
+    
+    await mkdir(dir);
+    const cp = copymitter(from, '/', [
+        'empty-directory',
+    ]);
+    
+    const [error] = await once(cp, 'error');
+    await rmdir(dir);
+    
+    t.ok(error, 'should emit error');
     t.end();
 });
 
