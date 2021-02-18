@@ -14,8 +14,15 @@ const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const {test} = require('supertape');
 const tryCatch = require('try-catch');
+
 const wait = require('@iocmd/wait');
 const mockRequire = require('mock-require');
+const {
+    read,
+    readStat,
+    remove,
+} = require('redzip');
+const pullout = require('pullout');
 
 const copymitter = require('..');
 
@@ -27,6 +34,7 @@ const temp = () => {
 
 test('file: no args', (t) => {
     const [error] = tryCatch(copymitter);
+    
     t.equal(error.message, 'from should be a string!', 'should throw when no args');
     t.end();
 });
@@ -79,10 +87,10 @@ test('copy 1 file: to: src', async (t) => {
     ]);
     
     const fromFull = join(from, name);
-    const toFull = join(to, name);
     
-    fs.unlinkSync(toFull);
-    rimraf.sync(to);
+    await rmdir(to, {
+        recursive: true,
+    });
     
     t.equal(src, fromFull, 'file paths should be equal');
     t.end();
@@ -100,8 +108,10 @@ test('copy 1 file: to: dest', async (t) => {
     ]);
     
     const full = join(to, name);
-    fs.unlinkSync(full);
-    rimraf.sync(to);
+    
+    await rmdir(to, {
+        recursive: true,
+    });
     
     t.equal(dest, full, 'file paths should be equal');
     t.equal(progress, 100, 'progress');
@@ -221,28 +231,104 @@ test('copy 1 file: from', async (t) => {
     t.end();
 });
 
+test('copy 1 file: zip: emit file', async (t) => {
+    const from = join(__dirname, 'fixture', 'hello.zip');
+    const to = temp();
+    const name = 'hello.txt';
+    const cp = copymitter(from, to, [name]);
+    
+    const [result] = await once(cp, 'file');
+    const expected = join(from, name);
+    
+    t.equal(result, expected, 'files data should be equal');
+    t.end();
+});
+
+test('copy 1 file: zip ', async (t) => {
+    const from = join(__dirname, 'fixture', 'hello.zip');
+    const to = temp();
+    const name = 'hello.txt';
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const streamSource = await read(source);
+    const streamDest = await read(dest);
+    
+    const dataSource = await pullout(streamSource);
+    const dataDest = await pullout(streamDest);
+    
+    await remove(join(to, name));
+    
+    t.equal(dataDest, dataSource, 'files data should be equal');
+    t.end();
+});
+
+test('copy 1 file: mode', async (t) => {
+    const from = join(__dirname, 'fixture');
+    const to = temp();
+    const name = 'hello.zip';
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const statSource = await readStat(source);
+    const statDest = await readStat(dest);
+    
+    await remove(dest);
+    
+    t.equal(statDest.mode, statSource.mode, 'fils mode should be equal');
+    t.end();
+});
+
 test('copy 1 file: from: symlink', async (t) => {
     const from = join(__dirname, 'fixture');
     const to = temp();
     const name = 'symlink';
     const cp = copymitter(from, to, [name]);
     
-    const [[file]] = await Promise.all([
-        once(cp, 'file'),
-        once(cp, 'end'),
-    ]);
+    await once(cp, 'end');
     
-    const full = join(from, name);
-    const dataFile = fs.readFileSync(file, 'utf8');
-    const dataFull = fs.readFileSync(full, 'utf8');
-    const statFile = fs.statSync(file);
-    const statFull = fs.statSync(full);
+    const source = join(from, name);
+    const dest = join(to, name);
     
-    fs.unlinkSync(join(to, name));
-    rimraf.sync(to);
+    const streamSource = await read(source);
+    const streamDest = await read(dest);
     
-    t.equal(dataFile, dataFull, 'files data should be equal');
-    t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+    const dataSource = await pullout(streamSource);
+    const dataDest = await pullout(streamDest);
+    
+    await remove(join(to, name));
+    
+    t.equal(dataDest, dataSource, 'files data should be equal');
+    t.end();
+});
+
+test('copy 1 file: from: symlink: mode', async (t) => {
+    const from = join(__dirname, 'fixture');
+    const to = temp();
+    const name = 'symlink';
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const statSource = await readStat(source);
+    const statDest = await readStat(dest);
+    
+    await rmdir(to, {
+        recursive: true,
+    });
+    
+    t.equal(statDest.mode, statSource.mode, 'files mode should be equal');
     t.end();
 });
 
@@ -270,13 +356,14 @@ test('copy directories: error', async (t) => {
     const from = join(__dirname, 'fixture');
     const dir = join(__dirname, 'fixture', 'empty-directory');
     
-    await mkdir(dir);
+    await mkdir(dir, {
+        recursive: true,
+    });
     const cp = copymitter(from, '/', [
         'empty-directory',
     ]);
     
     const [error] = await once(cp, 'error');
-    await rmdir(dir);
     
     t.ok(error, 'should emit error');
     t.end();

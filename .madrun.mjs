@@ -1,15 +1,18 @@
 import {run} from 'madrun';
 
+const lintEnv = {
+    ESLINT_CONFIG_FILE: '.putout.eslintrc.js',
+};
+
 export default {
     'watch:coverage': () => run('watcher', 'npm run coverage'),
     'watch:test': () => run('watcher', 'npm test'),
     'watcher': () => 'nodemon -w test -w lib --exec',
     'test': () => 'tape test/*.js',
-    'coverage': () => 'nyc npm test',
-    'report': () => 'nyc report --reporter=text-lcov | coveralls',
-    'lint': () => 'putout .',
+    'coverage': () => 'c8 npm test',
+    'report': () => 'c8 report --reporter=text-lcov | coveralls',
+    'lint': () => [lintEnv, 'putout .'],
     'fresh:lint': () => run('lint', '--fresh'),
     'lint:fresh': () => run('lint', '--fresh'),
     'fix:lint': () => run('lint', '--fix'),
 };
-
