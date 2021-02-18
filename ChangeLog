@@ -1,3 +1,10 @@
+2021.02.18, v6.0.3
+
+fix:
+- fix(copymitter) rm useless copying of directories
+
+
+
 2021.02.18, v6.0.2
 
 feature:
