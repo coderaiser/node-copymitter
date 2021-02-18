@@ -6,6 +6,7 @@ const fs = require('fs');
 const {
     mkdir,
     rmdir,
+    copyFile,
 } = require('fs/promises');
 const {tmpdir} = require('os');
 const {join, basename} = require('path');
@@ -244,7 +245,7 @@ test('copy 1 file: zip: emit file', async (t) => {
     t.end();
 });
 
-test('copy 1 file: zip ', async (t) => {
+test('copy 1 file: from zip', async (t) => {
     const from = join(__dirname, 'fixture', 'hello.zip');
     const to = temp();
     const name = 'hello.txt';
@@ -262,6 +263,34 @@ test('copy 1 file: zip ', async (t) => {
     const dataDest = await pullout(streamDest);
     
     await remove(join(to, name));
+    
+    t.equal(dataDest, dataSource, 'files data should be equal');
+    t.end();
+});
+
+test('copy 1 file: to zip', async (t) => {
+    const from = join(__dirname, 'fixture');
+    const to = join(temp(), 'remove-me.zip');
+    const name = 'hello.txt';
+    
+    await copyFile(join(from, 'hello.zip'), to);
+    
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const streamSource = await read(source);
+    const streamDest = await read(dest);
+    
+    const dataSource = await pullout(streamSource);
+    const dataDest = await pullout(streamDest);
+    
+    await rmdir(to, {
+        recursive: true,
+    });
     
     t.equal(dataDest, dataSource, 'files data should be equal');
     t.end();
