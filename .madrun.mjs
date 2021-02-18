@@ -4,12 +4,16 @@ const lintEnv = {
     ESLINT_CONFIG_FILE: '.putout.eslintrc.js',
 };
 
+const coverageEnv = {
+    SUPERTAPE_TIMEOUT: 4000,
+};
+
 export default {
     'watch:coverage': () => run('watcher', 'npm run coverage'),
     'watch:test': () => run('watcher', 'npm test'),
     'watcher': () => 'nodemon -w test -w lib --exec',
     'test': () => 'tape test/*.js',
-    'coverage': () => 'c8 npm test',
+    'coverage': async () => [coverageEnv, `c8 ${await run('test')}`],
     'report': () => 'c8 report --reporter=text-lcov | coveralls',
     'lint': () => [lintEnv, 'putout .'],
     'fresh:lint': () => run('lint', '--fresh'),
