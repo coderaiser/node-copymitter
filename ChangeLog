@@ -1,3 +1,11 @@
+2021.02.27, v6.0.4
+
+feature:
+- (package) supertape v5.0.0
+- (package) putout v15.3.1
+- (package) redzip v2.0.0
+
+
 2021.02.18, v6.0.3
 
 fix:
