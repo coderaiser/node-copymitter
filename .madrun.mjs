@@ -14,7 +14,7 @@ export default {
     'watcher': () => 'nodemon -w test -w lib --exec',
     'test': () => 'tape test/*.js',
     'coverage': async () => [coverageEnv, `c8 ${await run('test')}`],
-    'report': () => 'c8 report --reporter=text-lcov | coveralls',
+    'report': () => 'c8 report --reporter=lcov',
     'lint': () => [lintEnv, 'putout .'],
     'fresh:lint': () => run('lint', '--fresh'),
     'lint:fresh': () => run('lint', '--fresh'),
