@@ -469,7 +469,30 @@ test('copy empty file: from', async (t) => {
         once(cp, 'end'),
     ]);
     
-    rimraf.sync(to);
+    await rm(to, {
+        recursive: true,
+        force: true,
+    });
+    
+    t.equal(progress, 100);
+    t.end();
+});
+
+test('copy nested', async (t) => {
+    const from = join(__dirname, 'fixture');
+    const to = temp();
+    const name = 'nested';
+    const cp = copymitter(from, to, [name]);
+    
+    const [[progress]] = await Promise.all([
+        once(cp, 'progress'),
+        once(cp, 'end'),
+    ]);
+    
+    await rm(to, {
+        recursive: true,
+        force: true,
+    });
     
     t.equal(progress, 100);
     t.end();
