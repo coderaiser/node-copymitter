@@ -5,7 +5,7 @@ const {once} = require('events');
 const fs = require('fs');
 const {
     mkdir,
-    rmdir,
+    rm,
     copyFile,
 } = require('fs/promises');
 const {tmpdir} = require('os');
@@ -89,7 +89,8 @@ test('copy 1 file: to: src', async (t) => {
     
     const fromFull = join(from, name);
     
-    await rmdir(to, {
+    await rm(to, {
+        force: true,
         recursive: true,
     });
     
@@ -110,8 +111,9 @@ test('copy 1 file: to: dest', async (t) => {
     
     const full = join(to, name);
     
-    await rmdir(to, {
+    await rm(to, {
         recursive: true,
+        force: true,
     });
     
     t.equal(dest, full, 'file paths should be equal');
@@ -166,8 +168,9 @@ test('copy 1 file: to (directory exist)', async (t) => {
     
     await once(cp, 'end');
     
-    await rmdir(to, {
+    await rm(to, {
         recursive: true,
+        force: true,
     });
     
     t.end();
@@ -288,8 +291,9 @@ test('copy 1 file: to zip', async (t) => {
     const dataSource = await pullout(streamSource);
     const dataDest = await pullout(streamDest);
     
-    await rmdir(to, {
+    await rm(to, {
         recursive: true,
+        force: true,
     });
     
     t.equal(dataDest, dataSource, 'files data should be equal');
@@ -353,8 +357,9 @@ test('copy 1 file: from: symlink: mode', async (t) => {
     const statSource = await readStat(source);
     const statDest = await readStat(dest);
     
-    await rmdir(to, {
+    await rm(to, {
         recursive: true,
+        force: true,
     });
     
     t.equal(statDest.mode, statSource.mode, 'files mode should be equal');
@@ -373,7 +378,8 @@ test('copy directories: exist', async (t) => {
     const dir = join(to, name);
     const stat = fs.statSync(dir);
     
-    await rmdir(to, {
+    await rm(to, {
+        force: true,
         recursive: true,
     });
     
