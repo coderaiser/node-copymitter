@@ -39,7 +39,7 @@
     "pullout": "^4.0.0",
     "putout": "^18.0.1",
     "rimraf": "^3.0.0",
-    "supertape": "^5.0.0",
+    "supertape": "^5.4.1",
     "try-catch": "^3.0.0"
   },
   "repository": {
