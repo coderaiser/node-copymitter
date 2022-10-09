@@ -65,6 +65,23 @@ test('file: error EACESS', async (t) => {
     t.end();
 });
 
+test('file: error EACESS: end', async (t) => {
+    const cp = copymitter(__dirname, '/', [
+        basename(__filename),
+    ]);
+    
+    const abort = cp.abort.bind(cp);
+    await once(cp, 'error');
+    
+    const [errors] = await Promise.all([
+        once(cp, 'end'),
+        wait(abort, 1000),
+    ]);
+    
+    t.equal(errors.length, 1);
+    t.end();
+});
+
 test('directory: error EACESS', async (t) => {
     const from = join(__dirname, '..');
     const name = 'package.json';

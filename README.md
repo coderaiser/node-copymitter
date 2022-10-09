@@ -55,7 +55,7 @@ cp.on('error', (error) => {
         cp.continue();
 });
 
-cp.on('end', () => {
+cp.on('end', ({errors}) => {
     console.log('Copying ended up');
 });
 
