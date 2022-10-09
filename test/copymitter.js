@@ -119,7 +119,7 @@ test('copy 1 file: to: dest', async (t) => {
     t.equal(dest, full, 'file paths should be equal');
     t.equal(progress, 100, 'progress');
     t.end();
-});
+}, {checkAssertionsCount: false});
 
 test('copy 1 file: to (error: ENOENT, create dir error)', async (t) => {
     const from = join(__dirname, '..');
@@ -233,7 +233,7 @@ test('copy 1 file: from', async (t) => {
     
     rimraf.sync(to);
     t.end();
-});
+}, {checkAssertionsCount: false});
 
 test('copy 1 file: zip: emit file', async (t) => {
     const from = join(__dirname, 'fixture', 'hello.zip');
@@ -405,18 +405,20 @@ test('copy directories: error', async (t) => {
 });
 
 test('copy directories: emit: dest', async (t) => {
-    const from = __dirname;
+    const from = join(__dirname, '..');
     const to = temp();
-    const name = basename(__filename);
+    const name = basename(__dirname);
     const names = [name];
     const cp = copymitter(from, to, names);
     
-    cp.once('directory', (src, dest) => {
-        t.ok(dest, 'should emit "dest"');
-    });
+    const [dest] = await Promise.all([
+        once(cp, 'directory'),
+        once(cp, 'end'),
+    ]);
     
-    await once(cp, 'end');
     rimraf.sync(to);
+    
+    t.ok(dest, 'should emit "dest"');
     t.end();
 });
 
@@ -437,10 +439,11 @@ test('file: error ENOENT', async (t) => {
     t.end();
 });
 
-test('pause/continue', async (t) => {
+test('copymitter: pause/continue', async (t) => {
     const from = join(__dirname, '..');
     const to = temp();
     const name = 'lib';
+    
     mkdirp.sync(to);
     const cp = copymitter(from, to, [name]);
     
@@ -454,11 +457,12 @@ test('pause/continue', async (t) => {
     
     await once(cp, 'end');
     rimraf.sync(to);
+    
     t.pass('should emit pause');
     t.end();
 });
 
-test('copy empty file: from', async (t) => {
+test('copymitter: copy empty file: from', async (t) => {
     const from = join(__dirname, 'fixture');
     const to = temp();
     const name = 'empty.txt';
@@ -478,7 +482,7 @@ test('copy empty file: from', async (t) => {
     t.end();
 });
 
-test('copy nested', async (t) => {
+test('compymitter: copy nested', async (t) => {
     const from = join(__dirname, 'fixture');
     const to = temp();
     const name = 'nested';

@@ -1,4 +1,4 @@
-# Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Dependency Status][DependencyStatusIMGURL]][DependencyStatusURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
+# Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
 
 Copy files with emitter (even from and to `zip archives`). It will emit event on every percent of copied chunk of data.
 Good for making progress bars.
@@ -76,10 +76,8 @@ MIT
 [NPMIMGURL]: https://img.shields.io/npm/v/copymitter.svg?style=flat
 [BuildStatusURL]: https://github.com/coderaiser/copymitter/actions?query=workflow%3A%22Node+CI%22 "Build Status"
 [BuildStatusIMGURL]: https://github.com/coderaiser/copymitter/workflows/Node%20CI/badge.svg
-[DependencyStatusIMGURL]: https://img.shields.io/david/coderaiser/node-copymitter.svg?style=flat
 [LicenseIMGURL]: https://img.shields.io/badge/license-MIT-317BF9.svg?style=flat
 [CoverageIMGURL]: https://coveralls.io/repos/coderaiser/node-copymitter/badge.svg?branch=master&service=github
 [NPMURL]: https://npmjs.org/package/copymitter "npm"
-[DependencyStatusURL]: https://david-dm.org/coderaiser/node-copymitter "Dependency Status"
 [LicenseURL]: https://tldrlegal.com/license/mit-license "MIT License"
 [CoverageURL]: https://coveralls.io/github/coderaiser/node-copymitter?branch=master
