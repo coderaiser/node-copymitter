@@ -1,3 +1,18 @@
+2022.10.09, v7.0.0
+
+feature:
+- copymitter: end: add support of errors (https://github.com/coderaiser/cloudcmd/is
+- copymitter: drop support of node < 16
+- (package) eslint-plugin-putout v16.3.0
+- (package) madrun v9.0.6
+- (package) supertape v8.1.0
+- (package) putout v27.13.0
+- (package) eslint v8.25.0
+- (package) @iocmd/wait v2.1.0
+- (package) supertape v5.4.1
+- (package) putout v18.0.1
+- (package) eslint-plugin-putout v8.0.1
+
 2021.02.27, v6.0.4
 
 feature:
