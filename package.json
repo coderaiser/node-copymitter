@@ -2,6 +2,7 @@
   "name": "copymitter",
   "version": "6.0.4",
   "type": "commonjs",
+  "commitType": "colon",
   "description": "copy files with emitter",
   "main": "lib/copymitter.js",
   "scripts": {
@@ -54,7 +55,7 @@
     "file"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "author": "coderaiser <mnemonic.enemy@gmail.com> (http://coderaiser.github.io/)",
   "license": "MIT",
