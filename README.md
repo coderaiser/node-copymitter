@@ -55,6 +55,10 @@ cp.on('error', (error) => {
         cp.continue();
 });
 
+cp.on(('abort') => {
+    console.log('Copying aborted');
+});
+
 cp.on('end', ({errors}) => {
     console.log('Copying ended up');
 });

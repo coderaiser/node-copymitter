@@ -65,7 +65,7 @@ test('file: error EACESS', async (t) => {
     t.end();
 });
 
-test('file: error EACESS: end', async (t) => {
+test('file: error EACESS: abort', async (t) => {
     const cp = copymitter(__dirname, '/', [
         basename(__filename),
     ]);
@@ -73,12 +73,12 @@ test('file: error EACESS: end', async (t) => {
     const abort = cp.abort.bind(cp);
     await once(cp, 'error');
     
-    const [errors] = await Promise.all([
-        once(cp, 'end'),
+    await Promise.all([
+        once(cp, 'abort'),
         wait(abort, 1000),
     ]);
     
-    t.equal(errors.length, 1);
+    t.pass(`should emit 'abort'`);
     t.end();
 });
 
