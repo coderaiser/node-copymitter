@@ -14,8 +14,8 @@ npm i copymitter
 ```js
 const copymitter = require('copymitter');
 const cwd = process.cwd();
-const from = cwd + '/pipe-io';
-const to = cwd + '/example';
+const from = `${cwd}/pipe-io`;
+const to = `${cwd}/example`;
 const abortOnError = false;
 
 const cp = copymitter(from, to, [
@@ -55,7 +55,7 @@ cp.on('error', (error) => {
         cp.continue();
 });
 
-cp.on(('abort') => {
+cp.on('abort', () => {
     console.log('Copying aborted');
 });
 

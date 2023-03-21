@@ -2,7 +2,6 @@
   "name": "copymitter",
   "version": "7.0.0",
   "type": "commonjs",
-  "commitType": "colon",
   "description": "copy files with emitter",
   "main": "lib/copymitter.js",
   "scripts": {
