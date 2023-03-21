@@ -78,8 +78,8 @@ cp.pause();
 MIT
 
 [NPMIMGURL]: https://img.shields.io/npm/v/copymitter.svg?style=flat
-[BuildStatusURL]: https://github.com/coderaiser/copymitter/actions?query=workflow%3A%22Node+CI%22 "Build Status"
-[BuildStatusIMGURL]: https://github.com/coderaiser/copymitter/workflows/Node%20CI/badge.svg
+[BuildStatusURL]: https://github.com/coderaiser/node-copymitter/actions?query=workflow%3A%22Node+CI%22 "Build Status"
+[BuildStatusIMGURL]: https://github.com/coderaiser/node-copymitter/workflows/Node%20CI/badge.svg
 [LicenseIMGURL]: https://img.shields.io/badge/license-MIT-317BF9.svg?style=flat
 [CoverageIMGURL]: https://coveralls.io/repos/coderaiser/node-copymitter/badge.svg?branch=master&service=github
 [NPMURL]: https://npmjs.org/package/copymitter "npm"
