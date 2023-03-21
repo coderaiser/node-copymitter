@@ -1,3 +1,12 @@
+2023.03.21, v8.0.0
+
+feature:
+- 339dce0 package: eslint-plugin-putout v17.1.0
+- 9dee669 package: mkdirp v2.1.5
+- 033b35c package: putout v29.1.5
+- 20814e4 package: rimraf v4.4.0
+- 6c97038 copymitter: add support of "abort" event
+
 2022.10.09, v7.0.0
 
 feature:
