@@ -37,7 +37,7 @@
     "mock-require": "^3.0.3",
     "nodemon": "^2.0.2",
     "pullout": "^4.0.0",
-    "putout": "^29.1.5",
+    "putout": "^31.0.4",
     "rimraf": "^4.4.0",
     "supertape": "^8.1.0",
     "try-catch": "^3.0.0"
