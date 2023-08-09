@@ -1,6 +1,6 @@
 {
   "name": "copymitter",
-  "version": "8.0.1",
+  "version": "8.1.0",
   "type": "commonjs",
   "description": "copy files with emitter",
   "main": "lib/copymitter.js",
