@@ -8,6 +8,7 @@ const {
     rm,
     copyFile,
 } = require('fs/promises');
+
 const {tmpdir} = require('os');
 const {join, basename} = require('path');
 
@@ -18,11 +19,13 @@ const tryCatch = require('try-catch');
 
 const wait = require('@iocmd/wait');
 const mockRequire = require('mock-require');
+
 const {
     read,
     readStat,
     remove,
 } = require('redzip');
+
 const pullout = require('pullout');
 
 const copymitter = require('..');
@@ -136,7 +139,9 @@ test('copy 1 file: to: dest', async (t) => {
     t.equal(dest, full, 'file paths should be equal');
     t.equal(progress, 100, 'progress');
     t.end();
-}, {checkAssertionsCount: false});
+}, {
+    checkAssertionsCount: false,
+});
 
 test('copy 1 file: to (error: ENOENT, create dir error)', async (t) => {
     const from = join(__dirname, '..');
@@ -250,7 +255,9 @@ test('copy 1 file: from', async (t) => {
     
     rimraf.sync(to);
     t.end();
-}, {checkAssertionsCount: false});
+}, {
+    checkAssertionsCount: false,
+});
 
 test('copy 1 file: zip: emit file', async (t) => {
     const from = join(__dirname, 'fixture', 'hello.zip');
@@ -443,7 +450,9 @@ test('file: error ENOENT', async (t) => {
     const from = '/';
     const to = temp();
     const cp = copymitter(from, to, [
-        Math.random().toString(),
+        Math
+            .random()
+            .toString(),
     ]);
     
     const [[error]] = await Promise.all([

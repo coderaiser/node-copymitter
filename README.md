@@ -18,11 +18,7 @@ const from = `${cwd}/pipe-io`;
 const to = `${cwd}/example`;
 const abortOnError = false;
 
-const cp = copymitter(from, to, [
-    'LICENSE',
-    'README.md',
-    'package.json',
-]);
+const cp = copymitter(from, to, ['LICENSE', 'README.md', 'package.json']);
 
 cp.on('file', (from, to) => {
     console.log(`${from} -> ${to}`);
