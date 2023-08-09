@@ -38,7 +38,7 @@
     "nodemon": "^2.0.2",
     "pullout": "^4.0.0",
     "putout": "^31.0.4",
-    "rimraf": "^4.4.0",
+    "rimraf": "^5.0.1",
     "supertape": "^8.1.0",
     "try-catch": "^3.0.0"
   },
