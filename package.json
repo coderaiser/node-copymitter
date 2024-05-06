@@ -20,7 +20,7 @@
     "debug": "^4.0.1",
     "findit2": "^2.2.3",
     "fullstore": "^3.0.0",
-    "mkdirp": "^2.1.5",
+    "mkdirp": "^3.0.1",
     "redzip": "^3.0.0",
     "squad": "^3.0.0",
     "through2": "^4.0.2",
