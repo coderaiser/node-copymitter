@@ -1,16 +1,16 @@
 'use strict';
 
-const {once} = require('events');
+const {once} = require('node:events');
 
-const fs = require('fs');
+const fs = require('node:fs');
 const {
     mkdir,
     rm,
     copyFile,
-} = require('fs/promises');
+} = require('node:fs/promises');
 
-const {tmpdir} = require('os');
-const {join, basename} = require('path');
+const {tmpdir} = require('node:os');
+const {join, basename} = require('node:path');
 
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');

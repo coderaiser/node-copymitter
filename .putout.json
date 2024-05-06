@@ -1,4 +1,7 @@
 {
+    "rules": {
+        "eslint/convert-rc-to-flat": "on"
+    },
     "match": {
         "lib": {
             "promises/add-missing-await": "off"
