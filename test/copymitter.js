@@ -23,7 +23,7 @@ import {
     remove,
 } from 'redzip';
 import pullout from 'pullout';
-import copymitter from '../lib/copymitter.js';
+import {copymitter} from '../lib/copymitter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
