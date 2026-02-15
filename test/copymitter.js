@@ -15,7 +15,7 @@ const {join, basename} = require('node:path');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const {test} = require('supertape');
-const tryCatch = require('try-catch');
+const {tryCatch} = require('try-catch');
 
 const wait = require('@iocmd/wait');
 const mockRequire = require('mock-require');
@@ -102,7 +102,7 @@ test('copy 1 file: to: src', async (t) => {
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
     
-    const [[progress], [src]] = await Promise.all([
+    const [[], [src]] = await Promise.all([
         once(cp, 'progress'),
         once(cp, 'file'),
     ]);
@@ -124,7 +124,7 @@ test('copy 1 file: to: dest', async (t) => {
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
     
-    const [[progress], [src, dest]] = await Promise.all([
+    const [[progress], [, dest]] = await Promise.all([
         once(cp, 'progress'),
         once(cp, 'file'),
     ]);
@@ -237,7 +237,7 @@ test('copy 1 file: from', async (t) => {
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
     
-    const [[file], [progress]] = await Promise.all([
+    const [[file], []] = await Promise.all([
         once(cp, 'file'),
         once(cp, 'progress'),
         once(cp, 'end'),
@@ -474,6 +474,7 @@ test('copymitter: pause/continue', async (t) => {
     const cp = copymitter(from, to, [name]);
     
     const pause = cp.pause.bind(cp);
+    
     await Promise.all([
         once(cp, 'pause'),
         wait(pause),

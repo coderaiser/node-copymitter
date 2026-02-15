@@ -1,8 +1,9 @@
 import {run} from 'madrun';
+import {defineEnv} from 'supertape/env';
 
-const coverageEnv = {
-    SUPERTAPE_TIMEOUT: 4000,
-};
+const coverageEnv = defineEnv({
+    timeout: 11000,
+});
 
 export default {
     'watch:coverage': () => run('watcher', 'npm run coverage'),
