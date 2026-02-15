@@ -41,7 +41,7 @@
     "redlint": "^5.7.0",
     "rimraf": "^6.1.2",
     "supertape": "^12.5.0",
-    "try-catch": "^3.0.0"
+    "try-catch": "^4.0.9"
   },
   "repository": {
     "type": "git",
