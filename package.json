@@ -39,7 +39,7 @@
     "pullout": "^5.0.1",
     "putout": "^41.25.1",
     "redlint": "^5.7.0",
-    "rimraf": "^5.0.1",
+    "rimraf": "^6.1.2",
     "supertape": "^10.5.0",
     "try-catch": "^3.0.0"
   },
