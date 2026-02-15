@@ -2,7 +2,7 @@ import {run} from 'madrun';
 import {defineEnv} from 'supertape/env';
 
 const coverageEnv = defineEnv({
-    timeout: 11000,
+    timeout: 4000,
 });
 
 export default {

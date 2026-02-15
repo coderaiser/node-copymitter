@@ -1,5 +1,14 @@
 # Copymitter [![License][LicenseIMGURL]][LicenseURL] [![NPM version][NPMIMGURL]][NPMURL] [![Build Status][BuildStatusIMGURL]][BuildStatusURL] [![Coverage Status][CoverageIMGURL]][CoverageURL]
 
+[NPMIMGURL]: https://img.shields.io/npm/v/copymitter.svg?style=flat
+[BuildStatusURL]: https://github.com/coderaiser/node-copymitter/actions?query=workflow%3A%22Node+CI%22 "Build Status"
+[BuildStatusIMGURL]: https://github.com/coderaiser/node-copymitter/workflows/Node%20CI/badge.svg
+[LicenseIMGURL]: https://img.shields.io/badge/license-MIT-317BF9.svg?style=flat
+[CoverageIMGURL]: https://coveralls.io/repos/coderaiser/node-copymitter/badge.svg?branch=master&service=github
+[NPMURL]: https://npmjs.org/package/copymitter "npm"
+[LicenseURL]: https://tldrlegal.com/license/mit-license "MIT License"
+[CoverageURL]: https://coveralls.io/github/coderaiser/node-copymitter?branch=master
+
 Copy files with emitter (even from and to `zip archives`). It will emit event on every percent of copied chunk of data.
 Good for making progress bars.
 
@@ -12,7 +21,8 @@ npm i copymitter
 ### How to use?
 
 ```js
-const copymitter = require('copymitter');
+import {copymitter} from 'copymitter';
+
 const cwd = process.cwd();
 const from = `${cwd}/pipe-io`;
 const to = `${cwd}/example`;
@@ -72,12 +82,3 @@ cp.pause();
 ## License
 
 MIT
-
-[NPMIMGURL]: https://img.shields.io/npm/v/copymitter.svg?style=flat
-[BuildStatusURL]: https://github.com/coderaiser/node-copymitter/actions?query=workflow%3A%22Node+CI%22 "Build Status"
-[BuildStatusIMGURL]: https://github.com/coderaiser/node-copymitter/workflows/Node%20CI/badge.svg
-[LicenseIMGURL]: https://img.shields.io/badge/license-MIT-317BF9.svg?style=flat
-[CoverageIMGURL]: https://coveralls.io/repos/coderaiser/node-copymitter/badge.svg?branch=master&service=github
-[NPMURL]: https://npmjs.org/package/copymitter "npm"
-[LicenseURL]: https://tldrlegal.com/license/mit-license "MIT License"
-[CoverageURL]: https://coveralls.io/github/coderaiser/node-copymitter?branch=master

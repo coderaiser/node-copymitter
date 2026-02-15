@@ -1,36 +1,32 @@
-'use strict';
-
-const {once} = require('node:events');
-
-const fs = require('node:fs');
-const {
+import {once} from 'node:events';
+import fs from 'node:fs';
+import {
     mkdir,
     rm,
     copyFile,
-} = require('node:fs/promises');
-
-const {tmpdir} = require('node:os');
-const {join, basename} = require('node:path');
-
-const rimraf = require('rimraf');
-const mkdirp = require('mkdirp');
-const {test} = require('supertape');
-const {tryCatch} = require('try-catch');
-
-const wait = require('@iocmd/wait');
-const mockRequire = require('mock-require');
-
-const {
+} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {
+    join,
+    basename,
+    dirname,
+} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {rimraf} from 'rimraf';
+import {mkdirp} from 'mkdirp';
+import {test} from 'supertape';
+import {tryCatch} from 'try-catch';
+import wait from '@iocmd/wait';
+import {
     read,
     readStat,
     remove,
-} = require('redzip');
+} from 'redzip';
+import pullout from 'pullout';
+import copymitter from '../lib/copymitter.js';
 
-const pullout = require('pullout');
-
-const copymitter = require('..');
-
-const {reRequire, stopAll} = mockRequire;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const temp = () => {
     return fs.mkdtempSync(join(tmpdir(), `copymitter-`));
@@ -86,7 +82,7 @@ test('file: error EACESS: abort', async (t) => {
 });
 
 test('directory: error EACESS', async (t) => {
-    const from = join(__dirname, '..');
+    const from = new URL('..', import.meta.url).pathname;
     const name = 'package.json';
     const cp = copymitter(from, '/', [name]);
     
@@ -96,8 +92,35 @@ test('directory: error EACESS', async (t) => {
     t.end();
 });
 
+test('copymitter: pause/continue', async (t) => {
+    const from = new URL('..', import.meta.url).pathname;
+    const to = temp();
+    const name = 'lib';
+    
+    mkdirp.sync(to);
+    const cp = copymitter(from, to, [name]);
+    
+    const pause = cp.pause.bind(cp);
+    
+    await Promise.all([
+        once(cp, 'pause'),
+        wait(pause),
+    ]);
+    
+    const continue_ = cp.continue.bind(cp);
+    
+    await Promise.all([
+        once(cp, 'end'),
+        wait(continue_),
+    ]);
+    rimraf.sync(to);
+    
+    t.pass('should emit pause');
+    t.end();
+});
+
 test('copy 1 file: to: src', async (t) => {
-    const from = join(__dirname, '/../lib/');
+    const from = new URL('../lib/', import.meta.url).pathname;
     const to = temp();
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
@@ -119,7 +142,7 @@ test('copy 1 file: to: src', async (t) => {
 });
 
 test('copy 1 file: to: dest', async (t) => {
-    const from = join(__dirname, '/../lib/');
+    const from = new URL('../lib/', import.meta.url).pathname;
     const to = temp();
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
@@ -144,7 +167,7 @@ test('copy 1 file: to: dest', async (t) => {
 });
 
 test('copy 1 file: to (error: ENOENT, create dir error)', async (t) => {
-    const from = join(__dirname, '..');
+    const from = new URL('..', import.meta.url).pathname;
     const to = temp();
     const name = 'lib';
     
@@ -156,25 +179,22 @@ test('copy 1 file: to (error: ENOENT, create dir error)', async (t) => {
         was = true;
     };
     
-    mockRequire('redzip', {
+    const cp = copymitter(from, to, [name], {
         write,
     });
     
-    const copymitter = reRequire('..');
-    const cp = copymitter(from, to, [name]);
     const [error] = await once(cp, 'error');
     
     cp.abort();
     
     rimraf.sync(to);
-    stopAll();
     
     t.ok(error, 'should be error: ' + error.message);
     t.end();
 });
 
 test('copy 1 file: to (directory exist)', async (t) => {
-    const from = join(__dirname, '..');
+    const from = new URL('..', import.meta.url).pathname;
     const to = temp();
     const name = 'lib';
     
@@ -199,7 +219,7 @@ test('copy 1 file: to (directory exist)', async (t) => {
 });
 
 test('copy 1 file: to (directory exist, error mkdir)', async (t) => {
-    const from = join(__dirname, '..');
+    const from = new URL('..', import.meta.url).pathname;
     const to = temp();
     const name = 'lib';
     
@@ -211,28 +231,24 @@ test('copy 1 file: to (directory exist, error mkdir)', async (t) => {
         was = true;
     };
     
-    mockRequire('redzip', {
-        write,
-    });
-    
-    const copymitter = reRequire('..');
     mkdirp.sync(join(to, 'lib', 'copymitter.js'));
     
-    const cp = copymitter(from, to, [name]);
+    const cp = copymitter(from, to, [name], {
+        write,
+    });
     
     const [[error]] = await Promise.all([
         once(cp, 'error'),
     ]);
     
     rimraf.sync(to);
-    stopAll();
     
     t.ok(error, 'should be error: ' + error.message);
     t.end();
 });
 
 test('copy 1 file: from', async (t) => {
-    const from = join(__dirname, '/../lib/');
+    const from = new URL('../lib/', import.meta.url).pathname;
     const to = temp();
     const name = basename(__filename);
     const cp = copymitter(from, to, [name]);
@@ -296,7 +312,7 @@ test('copy 1 file: from zip', async (t) => {
 });
 
 test('copy 1 file: to zip', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = join(temp(), 'remove-me.zip');
     const name = 'hello.txt';
     
@@ -325,7 +341,7 @@ test('copy 1 file: to zip', async (t) => {
 });
 
 test('copy 1 file: mode', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
     const name = 'hello.zip';
     const cp = copymitter(from, to, [name]);
@@ -345,7 +361,7 @@ test('copy 1 file: mode', async (t) => {
 });
 
 test('copy 1 file: from: symlink', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
     const name = 'symlink';
     const cp = copymitter(from, to, [name]);
@@ -368,7 +384,7 @@ test('copy 1 file: from: symlink', async (t) => {
 });
 
 test('copy 1 file: from: symlink: mode', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
     const name = 'symlink';
     const cp = copymitter(from, to, [name]);
@@ -412,7 +428,7 @@ test('copy directories: exist', async (t) => {
 });
 
 test('copy directories: error', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const dir = join(__dirname, 'fixture', 'empty-directory');
     
     await mkdir(dir, {
@@ -429,7 +445,7 @@ test('copy directories: error', async (t) => {
 });
 
 test('copy directories: emit: dest', async (t) => {
-    const from = join(__dirname, '..');
+    const from = new URL('..', import.meta.url).pathname;
     const to = temp();
     const name = basename(__dirname);
     const names = [name];
@@ -465,32 +481,8 @@ test('file: error ENOENT', async (t) => {
     t.end();
 });
 
-test('copymitter: pause/continue', async (t) => {
-    const from = join(__dirname, '..');
-    const to = temp();
-    const name = 'lib';
-    
-    mkdirp.sync(to);
-    const cp = copymitter(from, to, [name]);
-    
-    const pause = cp.pause.bind(cp);
-    
-    await Promise.all([
-        once(cp, 'pause'),
-        wait(pause),
-    ]);
-    
-    cp.continue();
-    
-    await once(cp, 'end');
-    rimraf.sync(to);
-    
-    t.pass('should emit pause');
-    t.end();
-});
-
 test('copymitter: copy empty file: from', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
     const name = 'empty.txt';
     const cp = copymitter(from, to, [name]);
@@ -510,7 +502,7 @@ test('copymitter: copy empty file: from', async (t) => {
 });
 
 test('compymitter: copy nested', async (t) => {
-    const from = join(__dirname, 'fixture');
+    const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
     const name = 'nested';
     const cp = copymitter(from, to, [name]);
