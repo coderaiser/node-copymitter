@@ -37,7 +37,7 @@
     "mock-require": "^3.0.3",
     "nodemon": "^3.1.0",
     "pullout": "^5.0.1",
-    "putout": "^35.20.0",
+    "putout": "^41.25.1",
     "redlint": "^3.14.1",
     "rimraf": "^5.0.1",
     "supertape": "^10.5.0",
