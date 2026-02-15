@@ -21,7 +21,7 @@
     "findit2": "^2.2.3",
     "fullstore": "^4.0.0",
     "mkdirp": "^3.0.1",
-    "redzip": "^3.0.0",
+    "redzip": "^4.0.1",
     "squad": "^3.0.0",
     "through2": "^4.0.2",
     "try-to-catch": "^3.0.0",
