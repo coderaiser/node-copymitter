@@ -1,3 +1,8 @@
+2026.02.16, v10.0.2
+
+feature:
+- edd12fb remove unused devDependencies
+
 2026.02.15, v10.0.1
 
 fix:
