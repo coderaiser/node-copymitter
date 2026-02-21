@@ -262,17 +262,36 @@ test('copy 1 file: from', async (t) => {
     const full = join(from, name);
     const dataFile = fs.readFileSync(file, 'utf8');
     const dataFull = fs.readFileSync(full, 'utf8');
-    const statFile = fs.statSync(file);
-    const statFull = fs.statSync(full);
     
     t.equal(dataFile, dataFull, 'files data should be equal');
-    t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
     fs.unlinkSync(join(to, name));
     
     rimraf.sync(to);
     t.end();
-}, {
-    checkAssertionsCount: false,
+});
+
+test('copy 1 file: from: mode', async (t) => {
+    const from = new URL('../lib/', import.meta.url).pathname;
+    const to = temp();
+    const name = basename(__filename);
+    const cp = copymitter(from, to, [name]);
+    
+    const [[file], []] = await Promise.all([
+        once(cp, 'file'),
+        once(cp, 'progress'),
+        once(cp, 'end'),
+    ]);
+    
+    const full = join(from, name);
+    
+    const statFile = fs.statSync(file);
+    const statFull = fs.statSync(full);
+    
+    fs.unlinkSync(join(to, name));
+    rimraf.sync(to);
+    
+    t.equal(statFile.mode, statFull.mode, 'fils mode should be equal');
+    t.end();
 });
 
 test('copy 1 file: zip: emit file', async (t) => {
@@ -357,6 +376,26 @@ test('copy 1 file: mode', async (t) => {
     await remove(dest);
     
     t.equal(statDest.mode, statSource.mode, 'fils mode should be equal');
+    t.end();
+});
+
+test('copy 1 file: date', async (t) => {
+    const from = new URL('fixture', import.meta.url).pathname;
+    const to = temp();
+    const name = 'hello.zip';
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const statSource = await readStat(source);
+    const statDest = await readStat(dest);
+    
+    await remove(dest);
+    
+    t.deepEqual(statDest.date, statSource.date);
     t.end();
 });
 
