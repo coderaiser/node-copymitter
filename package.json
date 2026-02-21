@@ -36,7 +36,7 @@
     "nodemon": "^3.1.0",
     "pullout": "^5.0.1",
     "putout": "^42.0.12",
-    "redlint": "^5.7.0",
+    "redlint": "^6.1.1",
     "rimraf": "^6.1.2",
     "supertape": "^12.5.0",
     "try-catch": "^4.0.9"
