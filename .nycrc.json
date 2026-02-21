@@ -3,8 +3,8 @@
     "all": true,
     "exclude": [
         "**/*.spec.js",
-        "**/fixture",
         "**/*.config.*",
+        "**/fixture",
         ".*.{js,mjs}",
         "test"
     ],
