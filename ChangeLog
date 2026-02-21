@@ -1,3 +1,12 @@
+2026.02.21, v10.1.0
+
+feature:
+- c225dda copymitter: date (coderaiser/cloudcmd#457)
+- bb305c3 copymitter: redlint v6.1.1
+- 155a9d2 copymitter: putout v42.0.12
+- cc901ad copymitter: madrun v13.0.0
+- 0ffe11d copymitter: eslint-plugin-putout v31.0.1
+
 2026.02.16, v10.0.2
 
 feature:
