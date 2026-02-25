@@ -399,6 +399,26 @@ test('copy 1 file: date', async (t) => {
     t.end();
 });
 
+test('copymitter: copy 1 directory: date', async (t) => {
+    const from = new URL('fixture', import.meta.url).pathname;
+    const to = temp();
+    const name = 'empty-directory';
+    const cp = copymitter(from, to, [name]);
+    
+    await once(cp, 'end');
+    
+    const source = join(from, name);
+    const dest = join(to, name);
+    
+    const statSource = await readStat(source);
+    const statDest = await readStat(dest);
+    
+    await remove(dest);
+    
+    t.deepEqual(statDest.date, statSource.date);
+    t.end();
+});
+
 test('copy 1 file: from: symlink', async (t) => {
     const from = new URL('fixture', import.meta.url).pathname;
     const to = temp();
