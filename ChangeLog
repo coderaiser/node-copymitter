@@ -1,3 +1,9 @@
+2026.02.25, v10.2.0
+
+feature:
+- 26f1cdc copymitter: c8 v11.0.0
+- 0c6619b copymitter: set modification date of directory (coderaiser/cloudcmd#457)
+
 2026.02.21, v10.1.0
 
 feature:
