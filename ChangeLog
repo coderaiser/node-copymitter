@@ -1,3 +1,8 @@
+2026.02.27, v10.3.0
+
+feature:
+- f940ad4 copymitter: pop -> shift (coderaiser/cloudcmd#458)
+
 2026.02.25, v10.2.0
 
 feature:
