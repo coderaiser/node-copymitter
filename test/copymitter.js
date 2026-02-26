@@ -23,7 +23,7 @@ import {
     remove,
 } from 'redzip';
 import pullout from 'pullout';
-import {copymitter} from '../lib/copymitter.js';
+import {copymitter, _nextFile} from '../lib/copymitter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -577,5 +577,12 @@ test('compymitter: copy nested', async (t) => {
     });
     
     t.equal(progress, 100);
+    t.end();
+});
+
+test('compymitter: nextFile: use shift for correct order', (t) => {
+    const name = _nextFile(['hello', 'world']);
+    
+    t.equal(name, 'hello');
     t.end();
 });
